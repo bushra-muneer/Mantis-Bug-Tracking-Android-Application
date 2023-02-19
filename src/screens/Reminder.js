@@ -32,8 +32,8 @@ const ReminderScreen = props => {
       return (a < b) ? -1 : (a > b) ? 1 : 0;
     }
     
-  
-    const url = 'http://192.168.6.136/mantis/api/rest/users/getAll';
+  const url='http://192.168.8.102:1234/mantis/api/rest/users/getAll';
+  //   const url = 'http://192.168.6.136:8080/mantis/api/rest/users/getAll';
     const getProjectUsers = async () => {
       await axios
         .get(url, {headers: {Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'}})
@@ -93,9 +93,11 @@ const ReminderScreen = props => {
                     <SafeAreaView style={{flex: 1}}>
           <View style={styleSheet.MainContainer}>
             {/* <Text style={styleSheet.text}> React Native Multiple Select </Text> */}
-          
+            <View style={{padding:2, paddingTop:10}}>
+            <Text style={{ fontSize: 15 , color:'black',fontWeight:'bold'}}>Issue Id : {id}</Text>
+            </View>
       <View style={styleSheet.wrapper}>
-
+     
 <Text style={styleSheet.textn}>Status : </Text>
 <Checkbox  
 status={checked ? 'checked' : 'unchecked'}

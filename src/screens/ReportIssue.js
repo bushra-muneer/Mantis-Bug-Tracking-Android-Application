@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
+  TextInput, Keyboard ,
   Button,Fragment,Image,TouchableOpacity, Platform,
  PermissionsAndroid,
   ScrollView,
@@ -25,6 +25,7 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 
 const ReportIssue = props => {
   const [loading, setLoading] = useState(true);
+  const [loadingOwners, setLoadingOwners] = useState(true);
   const [updatedModuleData, setUpdatedModuleData] = useState([]);
   const [serverData_module, setServerData_module] = useState([]);
 
@@ -108,20 +109,43 @@ const selectMultipleFile = async () => {
   }
 };
 
-  const module_url = 'http://192.168.6.136/mantis/api/rest/users/getProdModule';
+ //const baseurl='http://192.168.6.136:8080/mantis';
+
+const baseurl='http://192.168.8.102:1234/mantis';
+
+  const module_url = baseurl+'/api/rest/users/getProdModule';
   const targetVerion_url =
-    'http://192.168.6.136/mantis/api/rest/users/getAllTargetVersion';
+  baseurl+'/api/rest/users/getAllTargetVersion';
 
   const clients_url =
-    'http://192.168.6.136/mantis/api/rest/users/getAllClients';
+  baseurl+'/api/rest/users/getAllClients';
 
  
   const qaOwners_url =
-    'http://192.168.6.136/mantis/api/rest/users/getAllQAOwners';
+  baseurl+'/api/rest/users/getAllQAOwners';
 
 
-    const Owners_url= 'http://192.168.6.136/mantis/api/rest/users/getAll';
+    const Owners_url= baseurl+'/api/rest/users/getAll';
 
+
+
+    const clearAll = () => {
+        alert(
+            "Issue Reported"
+        );
+        const timeout = setTimeout(() => {
+            handleTitle("Title");
+            handleDesc("Description");
+            setFilePathUri(null);
+            setModuleText("Select");
+            setTVText(" ");
+            setClientsText(" ");
+            setQA_OwnerText(" ");
+            setOwnersText("Select");
+            setMultipleFile([]);
+          }, 1000);
+       
+      };
 
 const requestCameraPermission = async () => {
   if (Platform.OS === 'android') {
@@ -369,7 +393,7 @@ const captureImage = async (type) => {
    
 
         setUpdatedOwnersData(serverData_owners);
-
+        setLoading(false);
         console.log(serverData_owners);
       }
       })
@@ -388,7 +412,6 @@ const captureImage = async (type) => {
     getTargetVersion();
     getClients();
     getOwners();
-
     getQAOwners();
    
     return () => clearTimeout(timeout);
@@ -427,11 +450,11 @@ const captureImage = async (type) => {
   };
 
   return (
-
-    <SafeAreaView style={styles.container}>
-         <ScrollView keyboardShouldPersistTaps="always"> 
+<>
+    {/* <SafeAreaView style={styles.container}> */}
+         <ScrollView keyboardShouldPersistTaps="handled"> 
       <View style={styles.container}>
-        <View style={{width: '100%', marginTop: 20}}>
+        <View style={{width: '100%', marginTop: 4}}>
           <View
             style={{
               flexDirection: 'row',
@@ -439,41 +462,18 @@ const captureImage = async (type) => {
               alignItems: 'flex-start',
               width: '50%',
             }}>
-            <Text style={{color: 'black', marginLeft: 10, fontSize: 14
+            <Text style={{color: 'black', marginLeft: 10, fontSize: 15
         }}>
-              Project :{'               '}
-            </Text>
+              Project : {'            '}
+            </Text>  
             <Text style={{color: 'black', fontSize: 15, fontWeight: 'bold'}}>
-            {' '}Production
+            {'    '}Production
             </Text>
           </View>
         </View>
 
  {/* Title */}
-        <View style={{width: '100%', marginTop: 10}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              width: '50%',
-            }}>
-            <Text style={{color: 'black', marginLeft: 10, fontSize: 14, marginTop: 30}}>
-              Title :{'                 '}
-            </Text>
-            <TextInput style = {styles.input}
-               underlineColorAndroid = "transparent"
-               placeholder = "Title"
-               color="black"
-               placeholderTextColor = "black"
-               autoCapitalize = "none"
-               onChangeText = {handleTitle}/>
-
-          </View>
-        </View>
-
- {/* Description */}
-        <View style={{width: '100%', marginTop: 10}}>
+        <View style={{width: '100%', marginTop: 0}}>
           <View
             style={{
               flexDirection: 'row',
@@ -482,7 +482,31 @@ const captureImage = async (type) => {
               width: '50%',
             }}>
             <Text style={{color: 'black', marginLeft: 10, fontSize: 14, marginTop: 20}}>
-              Description :{'    '}
+              Title :{'               '}
+            </Text>
+            <TextInput style = {styles.input}
+               underlineColorAndroid = "transparent"
+               placeholder = "Title"
+               color="black"
+               placeholderTextColor = "black"
+               autoCapitalize = "none"
+               value={title_text}
+               onChangeText = {handleTitle}/>
+
+          </View>
+        </View>
+
+ {/* Description */}
+        <View style={{width: '100%', marginTop: 1}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              width: '50%',
+            }}>
+            <Text style={{color: 'black', marginLeft: 11, fontSize: 14, marginTop: 15}}>
+              Description :{'   '}
             </Text>
             <TextInput style = {styles.desinput}
                underlineColorAndroid = "transparent"
@@ -490,6 +514,7 @@ const captureImage = async (type) => {
                color="black"
                placeholderTextColor = "black"
                autoCapitalize = "none"
+               value={desc_text}
                multiline
                onChangeText = {handleDesc}/>
 
@@ -509,15 +534,17 @@ const captureImage = async (type) => {
               style={{
                 color: 'black',
                 marginLeft: 10,
-                marginTop: 20,
+                marginTop: 15,
                 fontSize: 14,
               }}>
               Module :{'             '}
             </Text>
             
             <SearchableDropdown 
-              onTextChange={module_text => console.log(module_text)}
+              onTextChange={module_text => { Keyboard.dismiss()
+                 console.log(module_text)}}
               // Listner on the searchable input
+               
               onItemSelect={item => {
                 getModuleById_func(item.id);
               }}
@@ -527,10 +554,10 @@ const captureImage = async (type) => {
               // Suggestion container style
               textInputStyle={{
                 // Inserted text style
-                padding: 12,
+                padding: 7,
                 borderWidth: 1,
                 borderColor: '#ccc',
-                backgroundColor: '#FAF7F6',
+                backgroundColor: 'white',
                 color: 'black',
               }}
               placeholderTextColor={'black'}
@@ -538,8 +565,12 @@ const captureImage = async (type) => {
                 // Single dropdown item style
                 padding: 10,
                 marginTop: 2,
-                backgroundColor: '#FAF9F8',
-                borderColor: '#bbb',
+                borderWidth: 1,
+                borderLeftWidth:  0,
+                borderRightWidth:  0,
+                borderTopWidth:  0,
+                backgroundColor: 'white',
+                borderColor: '#ccc',
                 color: 'black',
               }}
               itemTextStyle={{
@@ -550,9 +581,10 @@ const captureImage = async (type) => {
               itemsContainerStyle={{
                 // Items container style you can pass maxHeight
                 // To restrict the items dropdown hieght
-                maxHeight: '100%',
-          
+                maxHeight: '60%',
                 color: 'black',
+                borderWidth: 1,
+                borderColor: '#ccc',
               }}
               items={updatedModuleData}
               listProps= {{nestedScrollEnabled: true }}
@@ -584,14 +616,15 @@ const captureImage = async (type) => {
               style={{
                 color: 'black',
                 marginLeft: 8,
-                marginTop: 20,
+                marginTop: 15,
                 fontSize: 13.5,
               }}>
               Current Version :{''}
             </Text>
 
             <SearchableDropdown
-              onTextChange={tv_text => console.log(tv_text)}
+              onTextChange={tv_text => { Keyboard.dismiss(),
+                 console.log(tv_text)}}
               // Listner on the searchable input
               onItemSelect={item => {
                 getTVById_func(item);
@@ -602,10 +635,10 @@ const captureImage = async (type) => {
               // Suggestion container style
               textInputStyle={{
                 // Inserted text style
-                padding: 12,
+                padding: 7,
                 borderWidth: 1,
                 borderColor: '#ccc',
-                backgroundColor: '#FAF7F6',
+                backgroundColor: 'white',
                 color: 'black',
               }}
               placeholderTextColor={'black'}
@@ -613,8 +646,12 @@ const captureImage = async (type) => {
                 // Single dropdown item style
                 padding: 10,
                 marginTop: 2,
-                backgroundColor: '#FAF9F8',
-                borderColor: '#bbb',
+                borderWidth: 1,
+                borderLeftWidth:  0,
+                borderRightWidth:  0,
+                borderTopWidth:  0,
+                backgroundColor: 'white',
+                borderColor: '#ccc',
                 color: 'black',
               }}
               itemTextStyle={{
@@ -627,6 +664,8 @@ const captureImage = async (type) => {
                 // To restrict the items dropdown hieght
                 maxHeight: '60%',
                 color: 'black',
+                borderWidth: 1,
+                borderColor: '#ccc',
               }}
               items={updatedTVData}
               listProps= {{nestedScrollEnabled: true }}
@@ -656,7 +695,7 @@ const captureImage = async (type) => {
               style={{
                 color: 'black',
                 marginLeft: 10,
-                marginTop: 20,
+                marginTop: 15,
                 fontSize: 14,
               }}>
               Clients :{'              '}
@@ -672,10 +711,10 @@ const captureImage = async (type) => {
               // Suggestion container style
               textInputStyle={{
                 // Inserted text style
-                padding: 12,
+                padding: 7,
                 borderWidth: 1,
                 borderColor: '#ccc',
-                backgroundColor: '#FAF7F6',
+                backgroundColor: 'white',
                 color: 'black',
               }}
               placeholderTextColor={'black'}
@@ -683,8 +722,12 @@ const captureImage = async (type) => {
                 // Single dropdown item style
                 padding: 10,
                 marginTop: 2,
-                backgroundColor: '#FAF9F8',
-                borderColor: '#bbb',
+                borderWidth: 1,
+                borderLeftWidth:  0,
+                borderRightWidth:  0,
+                borderTopWidth:  0,
+                backgroundColor: 'white',
+                borderColor: '#ccc',
                 color: 'black',
               }}
               itemTextStyle={{
@@ -697,6 +740,8 @@ const captureImage = async (type) => {
                 // To restrict the items dropdown hieght
                 maxHeight: '60%',
                 color: 'black',
+                borderWidth: 1,
+                borderColor: '#ccc',
               }}
               items={updatedClientsData}
               listProps= {{nestedScrollEnabled: true }}
@@ -726,11 +771,12 @@ const captureImage = async (type) => {
               style={{
                 color: 'black',
                 marginLeft: 10,
-                marginTop: 20,
+                marginTop: 15,
                 fontSize: 14,
               }}>
               Owners :{'             '}
             </Text>
+          
             <SearchableDropdown
               onTextChange={owners_text => console.log(owners_text)}
               // Listner on the searchable input
@@ -742,11 +788,11 @@ const captureImage = async (type) => {
               // Suggestion container style
               textInputStyle={{
                 // Inserted text style
-                padding: 11,
+                padding: 7,
                 borderWidth: 1,
                 borderColor: '#ccc',
                 fontSize:12,
-                backgroundColor: '#FAF7F6',
+                backgroundColor: 'white',
                 color: 'black',
               }}
               placeholderTextColor={'black'}
@@ -754,8 +800,12 @@ const captureImage = async (type) => {
                 // Single dropdown item style
                 padding: 10,
                 marginTop: 2,
-                backgroundColor: '#FAF9F8',
-                borderColor: '#bbb',
+                borderWidth: 1,
+                borderLeftWidth:  0,
+                borderRightWidth:  0,
+                borderTopWidth:  0,
+                backgroundColor: 'white',
+                borderColor: '#ccc',
                 color: 'black',
               }}
               itemTextStyle={{
@@ -768,9 +818,11 @@ const captureImage = async (type) => {
                 // To restrict the items dropdown hieght
                 maxHeight: '60%',
                 color: 'black',
+                borderWidth: 1,
+                borderColor: '#ccc',
               }}
               items={updatedOwnersData}
-              listProps= {{nestedScrollEnabled: true }}
+            //   listProps= {{nestedScrollEnabled: true }}
               // Mapping of item array
               defaultIndex={1}
               // Default selected item index
@@ -798,7 +850,7 @@ const captureImage = async (type) => {
               style={{
                 color: 'black',
                 marginLeft: 10,
-                marginTop: 20,
+                marginTop: 15,
                 fontSize: 14,
               }}>
               QA Owners :{'       '}
@@ -816,10 +868,10 @@ const captureImage = async (type) => {
               // Suggestion container style
               textInputStyle={{
                 // Inserted text style
-                padding: 12,
+                padding: 7,
                 borderWidth: 1,
                 borderColor: '#ccc',
-                backgroundColor: '#FAF7F6',
+                backgroundColor: 'white',
                 color: 'black',
               }}
               listProps= {{nestedScrollEnabled: true }}
@@ -828,22 +880,26 @@ const captureImage = async (type) => {
                 // Single dropdown item style
                 padding: 10,
                 marginTop: 2,
-                backgroundColor: '#FAF9F8',
-                borderColor: '#bbb',
+                borderWidth: 1,
+                borderLeftWidth:  0,
+                borderRightWidth:  0,
+                borderTopWidth:  0,
+                backgroundColor: 'white',
+                borderColor: '#ccc',
                 color: 'black',
               }}
               itemTextStyle={{
                 // Text style of a single dropdown item
 
                 color: 'black',
-              
               }}
-          //    setSort={(item, searchedText)=> item.name.toLowerCase().startsWith(searchedText.toLowerCase())}
               itemsContainerStyle={{
                 // Items container style you can pass maxHeight
                 // To restrict the items dropdown hieght
                 maxHeight: '60%',
                 color: 'black',
+                borderWidth: 1,
+                borderColor: '#ccc',
               }}
               items={updatedQA_OwnersData}
               // Mapping of item array
@@ -925,29 +981,41 @@ const captureImage = async (type) => {
       ))}
         {/* <Text>Very long text omg! This will surely be long.</Text> */}
       </View>
-
-           <View style={{width: '100%', marginTop: 1,marginLeft:10}} >
-          <TouchableOpacity style={{paddingLeft:100}} onPress={() => {deleteImage();}}>
+{/* 
+           <View style={{width: '100%', marginTop: 1,marginLeft:10}} > */}
+          {/* <TouchableOpacity style={{paddingLeft:100}} onPress={() => {deleteImage();}}>
           <Text  style={{textAlign: 'center',color:'white'}}>✖</Text>
 
                     </TouchableOpacity> 
-          
-            <Image
+           */}
+            {/* <Image
           source={{uri: filePathUri ?? null}}
           style={styles.imageStyle_f}
-        />
-       
+        /> */}
+    {filePathUri ?
+    <View>
+    <Text  style={{color: 'black',paddingLeft:10 }}>Image File Attached 
+    <TouchableOpacity style={{paddingLeft:8,}} onPress={() => {deleteImage();}}>
+          <Text  style={{textAlign: 'center',color:'red',paddingTop:5}}> ✖</Text>
+
+                    </TouchableOpacity>  </Text> 
+</View>
+                   :<Text> </Text>
+                    }
       
         
          </View>
+         </ScrollView>
 
  
 
+     {/* </ScrollView> */}
+     {/* </SafeAreaView> */}
+       <View>
+       <Button style={{marginTop:20}} title="Report" onPress={clearAll} />
+  
      </View>
-     </ScrollView>
-     </SafeAreaView>
-     
-   
+   </>
    );
  };
 
@@ -958,21 +1026,21 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow:1,
     backgroundColor: 'white',
-    padding: 10,
+  padding:4,
     color: 'black',
   },
   input: {
     margin: 15,
     height: 48,
-   width: 204,
+   width: 207,
     borderColor: '#ccc',
     borderWidth: 1
  },
  desinput: {
    
-   marginHorizontal: 15,
-  height: 74,
- width: 204,
+   marginHorizontal: 14,
+  height: 64,
+ width: 207,
   borderColor: '#ccc',
   borderWidth: 1,
 

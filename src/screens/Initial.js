@@ -6,7 +6,9 @@ const InitialScreen = props => {
    
     const [user, setUser] = useState([]);
    
-    const url='http://192.168.6.136/mantis/api/rest/users/me';
+    // const url='http://192.168.6.136:8080/mantis/api/rest/users/me';
+
+const url ='http://192.168.8.102:1234/mantis/api/rest/users/me';
     const getUsers= async ()=>{
     
     await axios.get(url,{ headers: {'Authorization': 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'} })
