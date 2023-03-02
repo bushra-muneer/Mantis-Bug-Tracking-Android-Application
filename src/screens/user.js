@@ -5,8 +5,9 @@ import {
   FlatList,
   Button,
   TouchableOpacity,
-  Switch,
+  Switch,Dimensions
 } from 'react-native';
+const { width } = Dimensions.get("window");
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
 import { color } from 'react-native-reanimated';
@@ -31,10 +32,10 @@ const UserScreen = props => {
     props.navigation.navigate('AddNote', {
       id: id,
     });
-
-  const baseurl = 'http://192.168.8.102:1234/mantis';
+    const baseurl = 'http://192.168.6.136:1234/mantis';
+  //const baseurl = 'http://192.168.8.102:1234/mantis';
   const getAll_url = baseurl + '/api/rest/issues/' + id;
-  // const url = 'http://192.168.6.136:8080/mantis/api/rest/issues/' + id;
+  // const url = 'http://192.168.6.136:1234/mantis/api/rest/issues/' + id;
   const getUser = async () => {
     await axios
       .get(getAll_url, { headers: { Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad' } })
@@ -71,6 +72,27 @@ const UserScreen = props => {
       })
       .finally(() => setLoading(false));
   };
+   function extract_date(updated_at){
+    const dattetime = updated_at;
+    //  "updated_at": "2022-11-14T14:22:11+05:00",
+    const date_time = dattetime.split('T');
+    const date = date_time[0].split('+');
+  console.log(date);
+  
+
+return date;
+   }
+   function extract_time(updated_at){
+    const dattetime = updated_at;
+    //  "updated_at": "2022-11-14T14:22:11+05:00",
+    const date_time = dattetime.split('T');
+    const date = date_time[0].split('+');
+    const time = date_time[1].split('+');
+    const timen = time[0].split('+');
+    const times = timen[0].split(':');
+    
+return timen;
+   }
 
   useEffect(() => {
     console.log(id);
@@ -95,7 +117,7 @@ const UserScreen = props => {
           <View style={{ padding: 2, paddingTop: 10, paddingHorizontal: 10 }}>
             <Button
               title="Send Reminder"
-              color={'grey'}
+              color={'#142c44'}
               onPress={() =>
                 props.navigation.navigate('ReminderScreen', {
                   id: id,
@@ -105,32 +127,226 @@ const UserScreen = props => {
             </Button>
             <Text></Text>
 
-            <Text
-              style={{
-                fontSize: 15,
-                color: 'black',
-                fontWeight: 'bold',
-                textAlign: 'justify',
-              }}>
-              Issue Id : {id}
-            </Text>
-            <Text></Text>
+        
 
             <FlatList
               data={user}
               keyExtractor={({ id }) => id.toString()}
               renderItem={({ item }) => (
                 <>
+                    <Text
+              style={{
+                fontSize: 16,
+                alignSelf:'center',
+                color: 'black',
+                fontWeight: 'bold',
+                textAlign: 'justify',
+              }}>
+              Issue # {id}
+            </Text>
+            <Text></Text>
                   <Text>
+                    
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
                     <Text
                       style={{
                         fontSize: 15,
                         color: 'black',
                         textAlign: 'justify',
+                        fontWeight:'bold',
+                    
+                        
                       }}>
-                      Project : {item.project.name}
-                      {'\n'}
-                      {'\n'}
+                      Project
+                    
+                   
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                        marginLeft:120
+                      }}>
+                      Category 
+                    
+                    </Text>
+                   
+                    </View>
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',width:340,paddingBottom:5,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      
+                      }}>
+                     {item.project.name}
+                    
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        marginLeft:94
+                      }}>
+                    {item.category.name}
+                    
+                    </Text>
+                    
+                   </View>
+
+
+
+
+
+                   <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                    
+                        
+                      }}>
+                         QA Status
+                    
+                   
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                        marginLeft:105
+                      }}>
+                    Ticket Status
+                    
+                    </Text>
+                   
+                    </View>
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingBottom:5,
+                    width:340,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      
+                      }}>
+                    {item.status.name ?? ''} 
+                    
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        marginLeft:114
+                      }}>
+                   {item.resolution.name ?? ''} 
+                    
+                    </Text>
+        
+                   </View>
+                   <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                    
+                        
+                      }}>
+                     Created At
+                    
+                   
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                        marginLeft:100
+                      }}>
+                   Updated At
+                    
+                    </Text>
+                   
+                    </View>
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingBottom:5,
+                    width:340,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      
+                      }}>
+                    {  Moment( extract_date(item.created_at)).format('d-MMM-YY')  +" "+ Moment( extract_time(item.created_at),'HHmmss').format("HH:mm")   ?? ''} 
+                    
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        marginLeft:76
+                      }}>
+                   { Moment( extract_date(item.updated_at)).format('d-MMM-YY') +" "+ Moment( extract_time(item.updated_at),'HHmmss').format("HH:mm")   ?? ''} 
+                    
+                    </Text>
+                    </View>
+                   {/* <View style={{flexDirection:'row' , flexWrap:'wrap',}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                    
+                        
+                      }}>
+                      Reporter
+                    
+                   
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                        marginLeft:110
+                      }}>
+                      Assigned To 
+                    
+                    </Text>
+                   
+                    </View> */}
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5
+  }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      Reporter 
+                        
                     </Text>
                     <Text
                       style={{
@@ -138,9 +354,23 @@ const UserScreen = props => {
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                      Category : {item.category.name}
-                      {'\n'}
-                      {'\n'}
+                         {item.reporter.real_name ?? ''} 
+                     
+                      
+                    </Text>
+                    </View>
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      Assigned To 
+                        
                     </Text>
                     <Text
                       style={{
@@ -148,9 +378,52 @@ const UserScreen = props => {
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                      Reporter : {item.reporter.name}
-                      {'\n'}
-                      {'\n'}
+                   {item.handler.real_name ?? ''} 
+                     
+                      
+                    </Text>
+                    </View>
+               
+{/* 
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',
+                    width:340,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      
+                      }}>
+                    {item.reporter.real_name ?? ''} 
+                    
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        marginLeft:104
+                      }}>
+                   {item.handler.real_name ?? ''} 
+                    
+                    </Text>
+                    
+                   </View>
+                   </View> */}
+               <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      Summary 
+                        
                     </Text>
                     <Text
                       style={{
@@ -158,9 +431,25 @@ const UserScreen = props => {
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                      Assigned to: {item.handler.name}
-                      {'\n'}
-                      {'\n'}
+                     {item.summary}
+                     
+                      
+                    </Text>
+                    </View>
+
+
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                        Description 
+                        
                     </Text>
                     <Text
                       style={{
@@ -168,11 +457,26 @@ const UserScreen = props => {
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                      Summary : {item.summary}
-                      {'\n'}
-                      {'\n'}
+                    {item.description}
+                     
+                      
                     </Text>
-                    <Text
+                    </View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    {/* <Text
                       style={{
                         fontSize: 15,
                         color: 'black',
@@ -181,12 +485,13 @@ const UserScreen = props => {
                       Description : {item.description}
                       {'\n'}
                       {'\n'}
-                    </Text>
+                    </Text> */}
                   </Text>
+                  <Text></Text>
                   <View
                     style={{
                       flexDirection: 'row',
-                      backgroundColor: 'grey',
+                      backgroundColor: '#142c44',
                       paddingVertical: 5,
                       paddingLeft: 4,
                       marginBottom: 4,
@@ -204,7 +509,7 @@ const UserScreen = props => {
                     </View>
                     <View style={{ flex: 7 }}>
                       <Switch
-                        trackColor={{ false: '#767577', true: '#81b0ff' }}
+                        trackColor={{ false: '#848c9c', true: '#041c34' }}
                         thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={toggleSwitch}
@@ -240,7 +545,7 @@ const UserScreen = props => {
                               paddingTop: 10,
                               paddingBottom: 10,
                               paddingLeft: 5,
-                              backgroundColor: '#E0E0E0',
+                              backgroundColor: '#c8cad0',
                               borderRadius: 5,
                               borderWidth: 1,
                               borderColor: '#E0E0E0',

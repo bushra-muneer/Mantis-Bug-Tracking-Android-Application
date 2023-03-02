@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator,View, Text, FlatList, TouchableOpacity,StyleSheet,StatusBar,TextInput, Keyboard,Button,ScrollView } from 'react-native';
+import { ActivityIndicator,View, Text, FlatList, TouchableOpacity,StyleSheet,StatusBar,TextInput, Dimensions,Button,ScrollView } from 'react-native';
 import User from './User';
 import { Searchbar } from 'react-native-paper';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios  from 'axios';
 import { NavigationEvents } from 'react-navigation';
 import { LogBox } from 'react-native';
-const Users = props => {
+import { useNavigation } from '@react-navigation/native';
+const { width } = Dimensions.get("window");
 
+// function Users({props,route,navigation}){
+ const Users = props => {
+
+  const id = props.id;
+  const [buttonIdd, setButtonId] = React.useState('');
 
     const KEYS_TO_FILTERS = ['id'];
 
@@ -17,10 +23,11 @@ const Users = props => {
     const [searchTerm, searchUpdated] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
-    
-     //const url='http://192.168.6.136:8080/mantis/api/rest/issues';
+    const [uri, setUri] = useState('');
 
-    const url='http://192.168.8.102:1234/mantis/api/rest/issues';
+     const url='http://192.168.6.136:1234/mantis/api/rest/issues';
+
+    //const url='http://192.168.8.102:1234/mantis/api/rest/issues';
 //const getIssues_url = baseurl + '/api/rest/issues/' + uid + '/' + id;
 
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -28,18 +35,53 @@ const Users = props => {
     const onChangeSearch = query => setSearchQuery(query);
   
     const [searchText, setSearchText] = useState();
+
+
     const getUsers= async ()=>{
-    
+      setUsers([]);
+      setFilteredDataSource([]);
+      setMasterDataSource([]);
+      if (buttonIdd=="unassigned"){
+
+        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=unassigned')
+      }
+      else if (buttonIdd=="assigned"){
+        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=assigned')
+        
+      }
+      else if (buttonIdd=="monitored"){
+        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=monitored')
+      
+      }
+      else if (buttonIdd=="reported"){
+        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=reported')
+      }
+      else if (buttonIdd=="View Issues"){
+        setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
+      }
+     else if (buttonIdd=="issues"){
+      setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
+     }
+     else {
+      setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
+     }
+
+      console.log(uri);
+     
     await axios.get(url,{ headers: {'Authorization': 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'} })
     .then((response)=>{
     const allissues = response.data.issues;
+   
+    setUsers(allissues);
+    setFilteredDataSource(allissues);
+    setMasterDataSource(allissues);
     setTimeout(() => {
         setUsers(allissues);
         setFilteredDataSource(allissues);
         setMasterDataSource(allissues);
       
         console.log(allissues);
-    }, 2500)
+    }, 10000)
 
 })
       
@@ -154,12 +196,23 @@ const Users = props => {
           </View>
         );
       }
+     
     useEffect(() => {
-
+      const uid =  global.uid;
+      console.log(uid);
+      console.log(id);
+      setUsers([]);
+      setFilteredDataSource([]);
+      setMasterDataSource([]);
+    //  alert(global.buttonId);
+    
+     setButtonId(global.buttonId);
+     
         setLoading(true);
+        
         getUsers();
         LogBox.ignoreAllLogs();
-    }, []);
+    }, [global.buttonId,buttonIdd]);
     const filteredDaaSource = searchTerm =='' ? filteredDataSource :filteredDataSource.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
     return(
         
@@ -172,8 +225,8 @@ const Users = props => {
             (
                 <>
                 
-                <View >
-                     <Text style={styles.title}>Assigned to Me</Text>
+                <View  >
+                     <Text style={styles.title}>{'Issues'}</Text>
                 {/* <FlatList
                     data={filteredDataSource}
                     ListHeaderComponent={renderHeader}
@@ -194,12 +247,40 @@ const Users = props => {
                     }
                 />
                  */}
-                   <SearchInput 
+                   {/* <SearchInput 
           onChangeText={(term) => { searchUpdated(term) }} 
           style={styles.searchInput}
           placeholder="Enter Issue #"
       
-          />
+          /> */}
+           <View style={styles.cupertinoSearchBarBasic2}>
+      <View style={styles.inputBox}>
+        {/* <Icon name="magnify" style={styles.inputLeftIcon}></Icon> */}
+        <TextInput  maxLength={6} placeholder={'Ticket Filter' } placeholderTextColor={'black'}  
+      style={styles.inputStyle}  keyboardType={'phone-pad'}
+      value={searchTerm ?? ''}
+      onChangeText={(searchTerm) => { searchUpdated(searchTerm) }} 
+            
+ ></TextInput>
+        {/* <IconButton
+              icon="magnify"
+              size={25}
+          
+           
+              onPress={() =>{
+        anotherFunc() 
+
+                // navigation.navigate('UserScreen', {
+                //   id: text
+                // })
+               
+                callSearch(text)
+              }
+              
+              }
+            /> */}
+      </View>
+    </View>
                  <ScrollView>
           {filteredDaaSource.map(item => {
             return (
@@ -233,12 +314,49 @@ const Users = props => {
 
 
 const styles = StyleSheet.create({
+  inputBox: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "white",
+    borderRadius: 6,
+  
+    borderColor:"grey",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  inputLeftIcon: {
+    color: "#000",
+    fontSize: 20,
+    alignSelf: "center",
+    paddingLeft: 5,
+    paddingRight: 5
+  },
+  inputStyle: {
+    height: 40,
+    marginLeft:15,
+    alignSelf: "center",
+    fontSize: 14,
+    lineHeight: 16,
+    color: "black",
+    
+    flex: 1
+  },
+  cupertinoSearchBarBasic2: {
+        marginTop:8,
+        marginBottom:5,
+        width: 343,
+        height: 41.5,
+      //  marginTop: -610,
+        alignSelf: "center"
+      },
   
     title: {
-        fontSize: 14,
+        fontSize: 13,
         color: 'white',
-        paddingHorizontal:108,
+      
+        paddingHorizontal:157,
         paddingVertical:3,
+        alignSelf:'center',
         backgroundColor:'#33b5e6'
     }, container: {
         flex: 1,

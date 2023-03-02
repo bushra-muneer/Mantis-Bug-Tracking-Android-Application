@@ -196,9 +196,9 @@ const captureImage = async (type) => {
 
 
   return (
-<>
-    {/* <SafeAreaView style={styles.container}> */}
-         <ScrollView keyboardShouldPersistTaps="handled"> 
+
+     <>
+       
       <View style={styles.container}>
         <View style={{width: '100%', marginTop: 20,marginLeft:20}}>
           <View
@@ -208,7 +208,7 @@ const captureImage = async (type) => {
               alignItems: 'flex-start',
               width: '50%',
             }}>
-            <Text style={{color: 'black', marginLeft: 10, fontSize: 17
+            <Text style={{color: 'black', marginLeft: 10, fontSize: 17,fontWeight:'bold'
         }}>
               Issue  : {id}
             </Text>  
@@ -231,10 +231,11 @@ const captureImage = async (type) => {
             </Text>
             <TextInput style = {styles.desinput}
                underlineColorAndroid = "transparent"
-              
+            
                color="black"
                placeholderTextColor = "black"
                autoCapitalize = "none"
+               
                value={desc_text}
                multiline
                onChangeText = {handleDesc}/>
@@ -306,17 +307,7 @@ const captureImage = async (type) => {
       ))}
         {/* <Text>Very long text omg! This will surely be long.</Text> */}
       </View>
-{/* 
-           <View style={{width: '100%', marginTop: 1,marginLeft:10}} > */}
-          {/* <TouchableOpacity style={{paddingLeft:100}} onPress={() => {deleteImage();}}>
-          <Text  style={{textAlign: 'center',color:'white'}}>✖</Text>
 
-                    </TouchableOpacity> 
-           */}
-            {/* <Image
-          source={{uri: filePathUri ?? null}}
-          style={styles.imageStyle_f}
-        /> */}
     {filePathUri ?
     <View>
     <Text  style={{color: 'black',paddingLeft:10 ,marginLeft:22}}>Image File Attached 
@@ -330,17 +321,14 @@ const captureImage = async (type) => {
       
         
          </View>
-         </ScrollView>
-
- 
-
-     {/* </ScrollView> */}
-     {/* </SafeAreaView> */}
+      
+        
        <View>
-       <Button style={{marginTop:20}} title="Add Note" onPress={clearAll} />
+       <Button  color="#041c34" title="Add Note" onPress={clearAll} />
   
      </View>
-   </>
+   
+     </>
    );
  };
 
@@ -350,9 +338,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexGrow:1,
-    backgroundColor: 'white',
+    backgroundColor: '#c8cad0',
   padding:4,
-    color: 'black',
+   
+  
   },
   input: {
     margin: 15,
@@ -364,10 +353,11 @@ const styles = StyleSheet.create({
  desinput: {
    
    marginHorizontal: 14,
-  height: 284,
+  height: 294,
  width: 237,
-  borderColor: '#ccc',
+  borderColor: 'black',
   borderWidth: 1,
+  borderRadius:10,
 
 },
   titleText: {

@@ -5,4 +5,4 @@ const Main = () => {
     <Screens />
   );
 };
-export default Main;
+export default Main;  

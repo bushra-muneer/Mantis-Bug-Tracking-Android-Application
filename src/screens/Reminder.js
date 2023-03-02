@@ -32,8 +32,8 @@ const ReminderScreen = props => {
       return (a < b) ? -1 : (a > b) ? 1 : 0;
     }
     
-  const url='http://192.168.8.102:1234/mantis/api/rest/users/getAll';
-  //   const url = 'http://192.168.6.136:8080/mantis/api/rest/users/getAll';
+  //const url='http://192.168.8.102:1234/mantis/api/rest/users/getAll';
+     const url = 'http://192.168.6.136:1234/mantis/api/rest/users/getAll';
     const getProjectUsers = async () => {
       await axios
         .get(url, {headers: {Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'}})
@@ -89,8 +89,9 @@ const ReminderScreen = props => {
         <Text>loading</Text>
       ) : (
         <>
+        <View style={{backgroundColor:'#c8cad0', flex:1}}>
         <ScrollView>
-                    <SafeAreaView style={{flex: 1}}>
+                    <SafeAreaView style={{flex: 1,backgroundColor:'#c8cad0'}}>
           <View style={styleSheet.MainContainer}>
             {/* <Text style={styleSheet.text}> React Native Multiple Select </Text> */}
             <View style={{padding:2, paddingTop:10}}>
@@ -113,6 +114,7 @@ onPress={() => {
          Private
         </Text>
       </View>
+      <View style={{backgroundColor:'#c8cad0'}}>
       <MultiSelect
               //  hideTags
               items={updatedData}
@@ -121,19 +123,21 @@ onPress={() => {
               onSelectedItemsChange={onSelectedItemsChange}
               selectedItems={selectedItems}
               selectText="Users"
+              styleTextDropdown={{borderRadius:10,marginHorizontal:5}}
               searchInputPlaceholderText="Search Users"
               onChangeInput={text => console.log(text)}
-              tagRemoveIconColor="#CCC"
-              tagBorderColor="#CCC"
-              tagTextColor="#CCC"
-              selectedItemTextColor="#CCC"
-              selectedItemIconColor="#CCC"
-              itemTextColor="#000"
+              tagRemoveIconColor="#243c4c"
+              tagBorderColor="#45556c"
+              tagTextColor="#45556c"
+              selectedItemTextColor="#041c34"
+              selectedItemIconColor="#041c34"
+              itemTextColor="#041c34"
               displayKey="name_email"
-              searchInputStyle={{color: '#CCC'}}
-              submitButtonColor="#00BFA5"
+              searchInputStyle={{color: '#344c5c'}}
+              submitButtonColor="#344c5c"
               submitButtonText="Submit"
             />
+              </View>
       <View style={styleSheet.BottomContainer}>
       <Text style={styleSheet.textn}>Message: </Text>
      
@@ -158,12 +162,13 @@ onPress={() => {
      </View>
 
         </SafeAreaView>
-        <View>
-          <Button style={{marginTop:20}} title="submit" onPress={() => alert("Reminder send")} />
+       
+        </ScrollView>
+        </View>
+        <View >
+          <Button style={{marginTop:20}}  color={'#041c34'} title="submit" onPress={() => alert("Reminder send")} />
      
         </View>
-        </ScrollView>
-
         </>
       );
     }
@@ -172,7 +177,7 @@ onPress={() => {
       MainContainer: {
         flex: 1,
         padding: 12,
-        backgroundColor: 'white',
+        backgroundColor: '#c8cad0',
       },
     
       text: {
@@ -188,10 +193,10 @@ onPress={() => {
         width: '100%',
         padding: 16,
         paddingTop: 50,
-        backgroundColor: 'white'
+        backgroundColor: '#c8cad0'
       },
       wrapper: {
-        color:'white',
+        color:'#c8cad0',
         display: 'flex',
         flexDirection: 'row',
         alignContent: 'center',
@@ -213,21 +218,21 @@ onPress={() => {
      
         paddingTop: 12,
         paddingHorizontal:12,
-        backgroundColor: 'white'
+        backgroundColor: '#c8cad0'
       },
       Container: {
       
         paddingTop: 45,
         paddingHorizontal:12,
         paddingBottom:5,
-        backgroundColor: 'white'
+        backgroundColor: '#c8cad0'
       },
       BottomContainer: {
       flex:1,
         paddingTop: 12,
         paddingHorizontal:12,
         paddingBottom:5,
-        backgroundColor: 'white'
+        backgroundColor: '#c8cad0'
       },
     
     

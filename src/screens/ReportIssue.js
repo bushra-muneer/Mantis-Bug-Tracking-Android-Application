@@ -6,11 +6,11 @@ import {
   View,
   TextInput, Keyboard ,
   Button,Fragment,Image,TouchableOpacity, Platform,
- PermissionsAndroid,
+ PermissionsAndroid,Dimensions,
   ScrollView,
 } from 'react-native';
 
-
+const {height} = Dimensions.get("window");
 import {
   launchCamera
 } from 'react-native-image-picker';
@@ -109,9 +109,9 @@ const selectMultipleFile = async () => {
   }
 };
 
- //const baseurl='http://192.168.6.136:8080/mantis';
+ const baseurl='http://192.168.6.136:1234/mantis';
 
-const baseurl='http://192.168.8.102:1234/mantis';
+//const baseurl='http://192.168.8.102:1234/mantis';
 
   const module_url = baseurl+'/api/rest/users/getProdModule';
   const targetVerion_url =
@@ -450,11 +450,9 @@ const captureImage = async (type) => {
   };
 
   return (
-<>
-    {/* <SafeAreaView style={styles.container}> */}
-         <ScrollView keyboardShouldPersistTaps="handled"> 
+    <View style={styles.container}>
       <View style={styles.container}>
-        <View style={{width: '100%', marginTop: 4}}>
+        <View style={{width: '100%', marginTop: 15}}>
           <View
             style={{
               flexDirection: 'row',
@@ -489,6 +487,7 @@ const captureImage = async (type) => {
                placeholder = "Title"
                color="black"
                placeholderTextColor = "black"
+               
                autoCapitalize = "none"
                value={title_text}
                onChangeText = {handleTitle}/>
@@ -555,8 +554,7 @@ const captureImage = async (type) => {
               textInputStyle={{
                 // Inserted text style
                 padding: 7,
-                borderWidth: 1,
-                borderColor: '#ccc',
+               borderRadius:10,
                 backgroundColor: 'white',
                 color: 'black',
               }}
@@ -636,8 +634,7 @@ const captureImage = async (type) => {
               textInputStyle={{
                 // Inserted text style
                 padding: 7,
-                borderWidth: 1,
-                borderColor: '#ccc',
+                borderRadius:10,
                 backgroundColor: 'white',
                 color: 'black',
               }}
@@ -712,8 +709,7 @@ const captureImage = async (type) => {
               textInputStyle={{
                 // Inserted text style
                 padding: 7,
-                borderWidth: 1,
-                borderColor: '#ccc',
+                borderRadius:10,
                 backgroundColor: 'white',
                 color: 'black',
               }}
@@ -789,8 +785,7 @@ const captureImage = async (type) => {
               textInputStyle={{
                 // Inserted text style
                 padding: 7,
-                borderWidth: 1,
-                borderColor: '#ccc',
+                borderRadius:10,
                 fontSize:12,
                 backgroundColor: 'white',
                 color: 'black',
@@ -869,8 +864,7 @@ const captureImage = async (type) => {
               textInputStyle={{
                 // Inserted text style
                 padding: 7,
-                borderWidth: 1,
-                borderColor: '#ccc',
+                borderRadius:10,
                 backgroundColor: 'white',
                 color: 'black',
               }}
@@ -968,7 +962,7 @@ const captureImage = async (type) => {
         </View>
         {multipleFile.map((item, key) => (
         // <View key={key}>
-           <View style={{width: '100%', marginTop: 1,marginLeft:10}} key={key}>
+           <View style={{width: '100%', marginTop: 1,marginLeft:10, backgroundColor: '#c8cad0',}} key={key}>
          
          <Text style={styles.textStyle}>
             File: {item.name ? item.name : ''} 
@@ -981,19 +975,9 @@ const captureImage = async (type) => {
       ))}
         {/* <Text>Very long text omg! This will surely be long.</Text> */}
       </View>
-{/* 
-           <View style={{width: '100%', marginTop: 1,marginLeft:10}} > */}
-          {/* <TouchableOpacity style={{paddingLeft:100}} onPress={() => {deleteImage();}}>
-          <Text  style={{textAlign: 'center',color:'white'}}>✖</Text>
 
-                    </TouchableOpacity> 
-           */}
-            {/* <Image
-          source={{uri: filePathUri ?? null}}
-          style={styles.imageStyle_f}
-        /> */}
     {filePathUri ?
-    <View>
+    <View style={{backgroundColor:"#c8cad0"}}>
     <Text  style={{color: 'black',paddingLeft:10 }}>Image File Attached 
     <TouchableOpacity style={{paddingLeft:8,}} onPress={() => {deleteImage();}}>
           <Text  style={{textAlign: 'center',color:'red',paddingTop:5}}> ✖</Text>
@@ -1005,17 +989,13 @@ const captureImage = async (type) => {
       
         
          </View>
-         </ScrollView>
-
- 
-
-     {/* </ScrollView> */}
-     {/* </SafeAreaView> */}
+         {/* </ScrollView> */}
        <View>
-       <Button style={{marginTop:20}} title="Report" onPress={clearAll} />
-  
+       <Button color={'#041c34'} title="Report" onPress={clearAll} />
+    
      </View>
-   </>
+   
+     </View>
    );
  };
 
@@ -1024,25 +1004,29 @@ export default ReportIssue;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexGrow:1,
-    backgroundColor: 'white',
-  padding:4,
+   // flexGrow:1,
+    margin:4,
+    backgroundColor: '#c8cad0',
+  
+
     color: 'black',
   },
   input: {
     margin: 15,
     height: 48,
    width: 207,
-    borderColor: '#ccc',
-    borderWidth: 1
+   backgroundColor:'white',
+  // borderColor: '#ccc',
+    //borderWidth: 1,
+    borderRadius:12,
  },
  desinput: {
-   
+  backgroundColor:'white',
    marginHorizontal: 14,
-  height: 64,
+  height: 94,
  width: 207,
-  borderColor: '#ccc',
-  borderWidth: 1,
+ borderRadius:10,
+ 
 
 },
   titleText: {
@@ -1078,9 +1062,10 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
    textStyle: {
-    backgroundColor: '#fff',
+  
     fontSize: 14,
     marginTop: 3,
+    backgroundColor: '#c8cad0',
     color: 'black',
   },
   buttonStyle: {
@@ -1099,6 +1084,7 @@ titleText_f: {
   fontWeight: 'bold',
   textAlign: 'center',
   paddingVertical: 20,
+  backgroundColor: '#c8cad0',
 },
 textStyle_f: {
   padding: 5,
@@ -1123,12 +1109,12 @@ mainContainer_row: {
   alignSelf: 'flex-start',
   alignContent: 'center',
   justifyContent: 'center',
-
+  backgroundColor: '#c8cad0',
 },
 container_row: {
   justifyContent: 'space-between',
   flexDirection: 'row',
- 
+  backgroundColor: '#c8cad0',
 },
 paragraph_row: {
   fontSize: 20,
