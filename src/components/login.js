@@ -50,7 +50,7 @@ const LoginScreen = props => {
 //     console.log(password);
 
 //     let UAT_mantis_url =
-//       //  'http://192.168.6.136:1234/mantis/api/soap/mantisconnect.php';
+//       //  'http://mantis.sibisoft.com/api/soap/mantisconnect.php';
 //       'http://192.168.8.102:1234/mantis/api/soap/mantisconnect.php';
 //     let prod_mantis_url = '';
 
@@ -155,7 +155,7 @@ useEffect(() => {
     setLoading(true);
     if (username!="" && password!=""){
       
-    await axios.get(login_uri,{ headers: {'Authorization': 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'} })
+    await axios.get(login_uri,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
     .then((response)=>{
        
     const users = response.data;
@@ -204,26 +204,33 @@ useEffect(() => {
 
 
   const Authenticate_login= async ()=>{
-    
-  const login_uri= 'http://192.168.6.136:1234/mantis/api/rest/internal/authenticate_login?username='+username+'&password='+password;
-   
+
+  const login_uri= 'http://mantis.sibisoft.com/api/rest/internal/authenticate_login?username='+username+'&password='+password;
+  
     if (username!="" && password!=""){
+      
       setLoading(true);
-    await axios.get(login_uri,{ headers: {'Authorization': 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'} })
+    await axios.get(login_uri,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
     .then((response)=> {
-     console.log(response.data);
+      console.log("hereEE");
+     console.log(response);
     global.pref_id=response.data.default_project;
+    console.log(response.data.default_project);
+    console.log("hereEEffff");
     global.uid=response.data.id;
     global.ac_level=response.data.access_level.id;
-
+    console.log("here1");
   
     setUuid(response.data.id);
     setAccess_level(response.data.access_level.id);
   
-
+    console.log("here2");
     console.log(uuid);
     console.log(access_level);
+    console.log("here");
     if ( response.data!=''){
+      console.log("inside if");
+      console.log(response);
       setLoading(false);
         console.log('success');
       onChangeUsername(userDetails.username)
@@ -265,7 +272,7 @@ useEffect(() => {
 
 })
       
-    .catch(error =>alert("Inavlid Login"))
+    .catch(error =>alert("Inavlid Login"),  setLoading(false))
   
     }else {
 

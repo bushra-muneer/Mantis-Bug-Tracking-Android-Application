@@ -36,7 +36,7 @@ const InitialScreen = props => {
 
   const uid =  global.uid;
   console.log(uid);
-  const baseurl='http://192.168.6.136:1234/mantis';
+  const baseurl='http://mantis.sibisoft.com';
   const qaOwners_url =
   baseurl+'/api/rest/projects/rest_projects_get_uid/'+uid;
   const filters_url =
@@ -98,7 +98,7 @@ setUserDetails(global.userDetails);
     const getFilters = async () => {
       await axios
         .get(filters_url, {
-          headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
+          headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
         })
         .then(response => {
           const all_filters = response.data.filters;
@@ -118,7 +118,7 @@ setUserDetails(global.userDetails);
     //  alert(global.pref_id);
       await axios
         .get(qaOwners_url, {
-          headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
+          headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
         })
         .then(response => {
           const all_qaOwners = response.data.projects;

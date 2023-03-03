@@ -234,7 +234,7 @@ const captureImage = async (type) => {
   const getmodules = async () => {
     await axios
       .get(module_url, {
-        headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
+        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
         const all_modules = response.data;
@@ -257,7 +257,7 @@ const captureImage = async (type) => {
   const getTargetVersion = async () => {
     await axios
       .get(targetVerion_url, {
-        headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
+        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
         const all_targetVersion = response.data;
@@ -293,7 +293,7 @@ const captureImage = async (type) => {
   const getClients = async () => {
     await axios
       .get(clients_url, {
-        headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
+        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
         const all_clients = response.data;
@@ -329,7 +329,7 @@ const captureImage = async (type) => {
   const getQAOwners = async () => {
     await axios
       .get(qaOwners_url, {
-        headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
+        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
         const all_qaOwners = response.data;
@@ -365,7 +365,7 @@ const captureImage = async (type) => {
   const getOwners = async () => {
     await axios
       .get(Owners_url, {
-        headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
+        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
         const all_Owners = response.data;

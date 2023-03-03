@@ -32,13 +32,13 @@ const UserScreen = props => {
     props.navigation.navigate('AddNote', {
       id: id,
     });
-    const baseurl = 'http://192.168.6.136:1234/mantis';
+    const baseurl = 'http://mantis.sibisoft.com';
   //const baseurl = 'http://192.168.8.102:1234/mantis';
   const getAll_url = baseurl + '/api/rest/issues/' + id;
-  // const url = 'http://192.168.6.136:1234/mantis/api/rest/issues/' + id;
+  // const url = 'http://mantis.sibisoft.com/api/rest/issues/' + id;
   const getUser = async () => {
     await axios
-      .get(getAll_url, { headers: { Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6' } })
+      .get(getAll_url, { headers: { Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh' } })
       .then(response => {
         const issue_Array = response.data.issues;
         setUser(issue_Array);
@@ -57,7 +57,7 @@ const UserScreen = props => {
 
   const getIssues_User = async () => {
     await axios
-      .get(getIssues_url, { headers: { Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6' } })
+      .get(getIssues_url, { headers: { Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh' } })
       .then(response => {
         const issue_Array = response.data.issues;
         setUser(issue_Array);
