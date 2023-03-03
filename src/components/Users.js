@@ -41,34 +41,34 @@ const { width } = Dimensions.get("window");
       setUsers([]);
       setFilteredDataSource([]);
       setMasterDataSource([]);
-      if (buttonIdd=="unassigned"){
+    //   if (buttonIdd=="unassigned"){
 
-        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=unassigned')
-      }
-      else if (buttonIdd=="assigned"){
-        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=assigned')
+    //     setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=unassigned')
+    //   }
+    //   else if (buttonIdd=="assigned"){
+    //     setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=assigned')
         
-      }
-      else if (buttonIdd=="monitored"){
-        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=monitored')
+    //   }
+    //   else if (buttonIdd=="monitored"){
+    //     setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=monitored')
       
-      }
-      else if (buttonIdd=="reported"){
-        setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=reported')
-      }
-      else if (buttonIdd=="View Issues"){
-        setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
-      }
-     else if (buttonIdd=="issues"){
-      setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
-     }
-     else {
-      setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
-     }
+    //   }
+    //   else if (buttonIdd=="reported"){
+    //     setUri('http://192.168.6.136:1234/mantis/api/rest/issues+'+global.uid+'/?filter_id=reported')
+    //   }
+    //   else if (buttonIdd=="View Issues"){
+    //     setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
+    //   }
+    //  else if (buttonIdd=="issues"){
+    //   setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
+    //  }
+    //  else {
+    //   setUri('http://192.168.6.136:1234/mantis/api/rest/issues');
+    //  }
 
-      console.log(uri);
+    //   console.log(uri);
      
-    await axios.get(url,{ headers: {'Authorization': 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'} })
+    await axios.get(url,{ headers: {'Authorization': 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'} })
     .then((response)=>{
     const allissues = response.data.issues;
    
@@ -81,7 +81,7 @@ const { width } = Dimensions.get("window");
         setMasterDataSource(allissues);
       
         console.log(allissues);
-    }, 10000)
+    }, 20000)
 
 })
       
@@ -282,7 +282,7 @@ const { width } = Dimensions.get("window");
       </View>
     </View>
                  <ScrollView>
-          {filteredDaaSource.map(item => {
+          { filteredDaaSource.map(item => {
             return (
                 <TouchableOpacity 
                 onPress={() => (

@@ -98,7 +98,7 @@ setUserDetails(global.userDetails);
     const getFilters = async () => {
       await axios
         .get(filters_url, {
-          headers: {Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'},
+          headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
         })
         .then(response => {
           const all_filters = response.data.filters;
@@ -118,7 +118,7 @@ setUserDetails(global.userDetails);
     //  alert(global.pref_id);
       await axios
         .get(qaOwners_url, {
-          headers: {Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'},
+          headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'},
         })
         .then(response => {
           const all_qaOwners = response.data.projects;

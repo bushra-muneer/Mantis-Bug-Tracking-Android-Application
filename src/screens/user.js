@@ -38,7 +38,7 @@ const UserScreen = props => {
   // const url = 'http://192.168.6.136:1234/mantis/api/rest/issues/' + id;
   const getUser = async () => {
     await axios
-      .get(getAll_url, { headers: { Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad' } })
+      .get(getAll_url, { headers: { Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6' } })
       .then(response => {
         const issue_Array = response.data.issues;
         setUser(issue_Array);
@@ -57,7 +57,7 @@ const UserScreen = props => {
 
   const getIssues_User = async () => {
     await axios
-      .get(getIssues_url, { headers: { Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad' } })
+      .get(getIssues_url, { headers: { Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6' } })
       .then(response => {
         const issue_Array = response.data.issues;
         setUser(issue_Array);

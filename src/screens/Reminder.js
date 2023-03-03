@@ -36,7 +36,7 @@ const ReminderScreen = props => {
      const url = 'http://192.168.6.136:1234/mantis/api/rest/users/getAll';
     const getProjectUsers = async () => {
       await axios
-        .get(url, {headers: {Authorization: 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'}})
+        .get(url, {headers: {Authorization: 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'}})
         .then(response => {
           const allprojectUsers = response.data;
           setServerData(allprojectUsers);

@@ -155,7 +155,7 @@ useEffect(() => {
     setLoading(true);
     if (username!="" && password!=""){
       
-    await axios.get(login_uri,{ headers: {'Authorization': 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'} })
+    await axios.get(login_uri,{ headers: {'Authorization': 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'} })
     .then((response)=>{
        
     const users = response.data;
@@ -209,7 +209,7 @@ useEffect(() => {
    
     if (username!="" && password!=""){
       setLoading(true);
-    await axios.get(login_uri,{ headers: {'Authorization': 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'} })
+    await axios.get(login_uri,{ headers: {'Authorization': 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'} })
     .then((response)=> {
      console.log(response.data);
     global.pref_id=response.data.default_project;

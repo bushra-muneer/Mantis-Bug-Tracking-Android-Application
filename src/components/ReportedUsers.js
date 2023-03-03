@@ -68,7 +68,7 @@ const { width } = Dimensions.get("window");
 
       console.log(uri);
      
-    await axios.get(url,{ headers: {'Authorization': 'Gvp5TxjBTT8pZOPtmRBydKDu9gEhtsad'} })
+    await axios.get(url,{ headers: {'Authorization': 'VkJRhthI3ry464pNVWb66SR2fd0GVVj6'} })
     .then((response)=>{
     const allissues = response.data.issues;
    
