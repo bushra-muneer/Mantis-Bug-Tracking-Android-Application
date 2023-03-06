@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#142c44",
-    fontSize: 50
+    fontSize: 53,
+    marginLeft:6,
   }
 });
 

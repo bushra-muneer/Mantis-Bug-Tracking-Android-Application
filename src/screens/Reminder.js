@@ -44,7 +44,7 @@ const ReminderScreen = props => {
   
   console.log(serverData);
   
-    serverData.map(i => (i.name_email = i['realname'] + '[' + i['email'] + ']'));
+    serverData.map(i => (i.name_email = i['realname'] + ' [' + i['email'] + ']'));
     serverData.sort(function(a, b) {
       return compareStrings(a.realname, b.realname);
     })

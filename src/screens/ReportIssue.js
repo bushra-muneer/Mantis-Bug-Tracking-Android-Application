@@ -28,9 +28,10 @@ const ReportIssue = props => {
   const [loadingOwners, setLoadingOwners] = useState(true);
   const [updatedModuleData, setUpdatedModuleData] = useState([]);
   const [serverData_module, setServerData_module] = useState([]);
-
+  const [serverData_clients, setServerData_clients] = useState([]);
+  const [serverData_tv, setServerData_tv] = useState([]);
   const [serverData_owners, setServerData_owners] = useState([]);
-
+  const [serverData_QAowners, setServerData_QAowners] = useState([]);
   const [updatedTVData, setUpdatedTVData] = useState([]);
 
   const [updatedOwnersData, setUpdatedOwnersData] = useState([]);
@@ -109,7 +110,7 @@ const selectMultipleFile = async () => {
   }
 };
 
- const baseurl='http://192.168.6.136:1234/mantis';
+ const baseurl='http://mantis.sibisoft.com';
 
 //const baseurl='http://192.168.8.102:1234/mantis';
 
@@ -137,11 +138,11 @@ const selectMultipleFile = async () => {
             handleTitle("Title");
             handleDesc("Description");
             setFilePathUri(null);
-            setModuleText("Select");
-            setTVText(" ");
-            setClientsText(" ");
-            setQA_OwnerText(" ");
-            setOwnersText("Select");
+            setModuleText("");
+            setTVText("");
+            setClientsText("");
+            setQA_OwnerText("");
+            setOwnersText("");
             setMultipleFile([]);
           }, 1000);
        
@@ -238,21 +239,22 @@ const captureImage = async (type) => {
       })
       .then(response => {
         const all_modules = response.data;
-        console.log('---------------Module Data-------------------');
+     //   console.log('---------------Module Data-------------------');
 
         setServerData_module(all_modules);
 
         serverData_module.sort(function (a, b) {
           return compareStrings(a.name, b.name);
         });
-        console.log(serverData_module);
+       // console.log(serverData_module);
         setUpdatedModuleData(serverData_module);
 
-        console.log(serverData_module);
+       // console.log(serverData_module);
       })
       .catch(error => console.error(`Error: $(error)`))
       .finally(() => setLoading(false));
   };
+
 
   const getTargetVersion = async () => {
     await axios
@@ -260,65 +262,55 @@ const captureImage = async (type) => {
         headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
-        const all_targetVersion = response.data;
+      
+        const all_tv = response.data;
+        console.log('---------------Target Version Data-------------------');
+      //  json = JSON.parse({}, all_tv);
+      
+let uniqueChars = [...new Set(all_tv)];
 
-        //   setServerData_targetVersion(all_targetVersion);
 
-        var finalJSON = all_targetVersion[0]['possible_values'];
-        // console.log(finalJSON);
-        const pieces = finalJSON.split('|');
-        //console.log(pieces);
-        const items = pieces.filter(el => {
-          return el != null && el != '';
-        });
-        var tvarray = new Array();  
+        var version_array = new Array();  
 
-        for(var c in items) {
+        for(var c in uniqueChars) {
           var jsonObj = new Object();
-          jsonObj.name = items[c];
-          tvarray.push(jsonObj);
+          jsonObj.id=c
+          jsonObj.name = uniqueChars[c];
+          version_array.push(jsonObj);
         }
+        console.log(version_array);
+        setServerData_tv(version_array);
 
-     
-        setUpdatedTVData(tvarray);
+        serverData_tv.sort(function (a, b) {
+          return compareStrings(a.name, b.name);
+        });
+    
+        setUpdatedTVData(serverData_tv);
 
-        console.log('---------------Target Version-------------------');
-        console.log(updatedTVData);
-     
+      
       })
       .catch(error => console.error(`Error: $(error)`))
       .finally(() => setLoading(false));
   };
-
   const getClients = async () => {
     await axios
       .get(clients_url, {
         headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
+      
         const all_clients = response.data;
+    //    console.log('---------------Clients Data-------------------');
 
-        //  setServerData_clients(all_clients);
+        setServerData_clients(all_clients);
 
-        var finalJSON = all_clients[0]['possible_values'];
-        // console.log(finalJSON);
-        const pieces = finalJSON.split('|');
-        //console.log(pieces);
-        const items = pieces.filter(el => {
-          return el != null && el != '';
+        serverData_clients.sort(function (a, b) {
+          return compareStrings(a.name, b.name);
         });
-        var clientsarray = new Array();  
+      //  console.log(serverData_clients);
+        setUpdatedClientsData(serverData_clients);
 
-        for(var c in items) {
-          var jsonObj = new Object();
-          jsonObj.name = items[c];
-          clientsarray.push(jsonObj);
-        }
-
-        setUpdatedClientsData(clientsarray);
-
-        console.log('---------------Clients-------------------');
-        console.log(updatedClientsData);
+       // console.log(serverData_clients);
       })
       .catch(error => console.error(`Error: $(error)`))
       .finally(() => setLoading(false));
@@ -326,40 +318,79 @@ const captureImage = async (type) => {
 
 
 
+  // const  = async () => {
+  //   await axios
+  //     .get(qaOwners_url, {
+  //       headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+  //     })
+  //     .then(response => {
+  //       const all_qaOwners = response.data;
+
+  //       //  setServerData_clients(all_clients);
+
+  //       var finalJSON = all_qaOwners[0]['possible_values'];
+  //       // console.log(finalJSON);
+  //       const pieces = finalJSON.split('|');
+  //       //console.log(pieces);
+  //       const items = pieces.filter(el => {
+  //         return el != null && el != '';
+  //       });
+  //       var qaOwnersArray = new Array();  
+
+  //       for(var c in items) {
+  //         var jsonObj = new Object();
+  //         jsonObj.name = items[c];
+  //         qaOwnersArray.push(jsonObj);
+  //       }
+
+  //       setUpdatedQA_OwnersData(qaOwnersArray);
+
+  //       console.log('---------------QA Owners-------------------');
+  //     //  console.log(updatedQA_OwnersData);
+  //     })
+  //     .catch(error => console.error(`Error: $(error)`))
+  //     .finally(() => setLoading(false));
+  // };
+  
+
   const getQAOwners = async () => {
     await axios
-      .get(qaOwners_url, {
+      .get(Owners_url, {
         headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
       })
       .then(response => {
         const all_qaOwners = response.data;
+        if (all_qaOwners!=null){
+   
+        console.log('---------------For QA Owners-------------------');
+    
+        var formattedUserDetails = all_qaOwners.map(({ id,realname:name,email,user_department,enabled,access_level }) => ({
+          id,
+          name,
+          email,
+          user_department,
+          enabled,
+          access_level
+        }));
+      //  console.log(formattedUserDetails);
 
-        //  setServerData_clients(all_clients);
-
-        var finalJSON = all_qaOwners[0]['possible_values'];
-        // console.log(finalJSON);
-        const pieces = finalJSON.split('|');
-        //console.log(pieces);
-        const items = pieces.filter(el => {
-          return el != null && el != '';
+     
+        var data_filter = formattedUserDetails.filter( element => element.user_department =="QA")
+console.log(data_filter);
+setServerData_QAowners(data_filter);
+        serverData_QAowners.sort(function (a, b) {
+          return compareStrings(a.name, b.name);
         });
-        var qaOwnersArray = new Array();  
+   
 
-        for(var c in items) {
-          var jsonObj = new Object();
-          jsonObj.name = items[c];
-          qaOwnersArray.push(jsonObj);
-        }
-
-        setUpdatedQA_OwnersData(qaOwnersArray);
-
-        console.log('---------------QA Owners-------------------');
-        console.log(updatedQA_OwnersData);
+        setUpdatedQA_OwnersData(serverData_QAowners);
+        setLoading(false);
+      //  console.log(serverData_owners);
+      }
       })
       .catch(error => console.error(`Error: $(error)`))
       .finally(() => setLoading(false));
   };
-  
 
 
   const getOwners = async () => {
@@ -382,7 +413,7 @@ const captureImage = async (type) => {
           enabled,
           access_level
         }));
-        console.log(formattedUserDetails);
+       // console.log(formattedUserDetails);
 
         setServerData_owners(formattedUserDetails);
         
@@ -394,7 +425,7 @@ const captureImage = async (type) => {
 
         setUpdatedOwnersData(serverData_owners);
         setLoading(false);
-        console.log(serverData_owners);
+      //  console.log(serverData_owners);
       }
       })
       .catch(error => console.error(`Error: $(error)`))
@@ -424,6 +455,19 @@ const captureImage = async (type) => {
     console.log(ydataa.name);
   };
 
+  const getClientsById_func = id => {
+    var ydataa = serverData_clients.find(item => item.id === id);
+    console.log(ydataa);
+    setClientsText(ydataa.name);
+    console.log(ydataa.name);
+  };
+  const getTargetVersionById_func = id => {
+    var ydataa = serverData_tv.find(item => item.id === id);
+    console.log(ydataa);
+    setTVText(ydataa.name);
+    console.log(ydataa.name);
+  };
+
   const getOwnersById_func = id => {
     var ydataa = serverData_owners.find(item => item.id === id);
     console.log(ydataa);
@@ -438,10 +482,10 @@ const captureImage = async (type) => {
     console.log(t);
   };
 
-  const getClientsById_func = t => {
-    setClientsText(t);
-    console.log(t);
-  };
+  // const getClientsById_func = t => {
+  //   setClientsText(t);
+  //   console.log(t);
+  // };
 
 
   const getQAOwnersById_func = t => {
@@ -590,7 +634,7 @@ const captureImage = async (type) => {
               // Mapping of item array
               defaultIndex={1}
               // Default selected item index
-              placeholder={module_text == '' ? 'Select' : module_text}
+              placeholder={module_text == "" ? 'Select' : module_text}
               // place holder for the search input
               resPtValue={false}
               // Reset textInput Value with true and false state
@@ -620,21 +664,22 @@ const captureImage = async (type) => {
               Current Version :{''}
             </Text>
 
-            <SearchableDropdown
-              onTextChange={tv_text => { Keyboard.dismiss(),
+            <SearchableDropdown 
+              onTextChange={tv_text => { Keyboard.dismiss()
                  console.log(tv_text)}}
               // Listner on the searchable input
+               
               onItemSelect={item => {
-                getTVById_func(item);
+                getTargetVersionById_func(item.id);
               }}
+              // setSort={(item, searchedText)=> item.name.toLowerCase().startsWith(searchedText.toLowerCase())}
               // Called after the selection
-              containerStyle={{padding: 5, color: 'black', width: 215
-            }}
+              containerStyle={{padding: 5, color: 'black', width: 216,}}
               // Suggestion container style
               textInputStyle={{
                 // Inserted text style
                 padding: 7,
-                borderRadius:10,
+               borderRadius:10,
                 backgroundColor: 'white',
                 color: 'black',
               }}
@@ -666,16 +711,18 @@ const captureImage = async (type) => {
               }}
               items={updatedTVData}
               listProps= {{nestedScrollEnabled: true }}
+              
               // Mapping of item array
               defaultIndex={1}
               // Default selected item index
-              placeholder={tv_text.name == null ? 'Select' : tv_text.name}
+              placeholder={tv_text=="" ? "Select":tv_text}
               // place holder for the search input
               resPtValue={false}
               // Reset textInput Value with true and false state
               underlineColorAndroid="transparent"
               // To remove the underline from the android input
             />
+
           </View>
         </View>
 
@@ -697,19 +744,22 @@ const captureImage = async (type) => {
               }}>
               Clients :{'              '}
             </Text>
-            <SearchableDropdown
-              onTextChange={clients_text => console.log(clients_text)}
+            <SearchableDropdown 
+              onTextChange={clients_text => { Keyboard.dismiss()
+                 console.log(clients_text)}}
               // Listner on the searchable input
+               
               onItemSelect={item => {
-                getClientsById_func(item);
+                getClientsById_func(item.id);
               }}
+              // setSort={(item, searchedText)=> item.name.toLowerCase().startsWith(searchedText.toLowerCase())}
               // Called after the selection
-              containerStyle={{padding: 5, color: 'black', width: 216}}
+              containerStyle={{padding: 5, color: 'black', width: 216,}}
               // Suggestion container style
               textInputStyle={{
                 // Inserted text style
                 padding: 7,
-                borderRadius:10,
+               borderRadius:10,
                 backgroundColor: 'white',
                 color: 'black',
               }}
@@ -741,10 +791,11 @@ const captureImage = async (type) => {
               }}
               items={updatedClientsData}
               listProps= {{nestedScrollEnabled: true }}
+              
               // Mapping of item array
               defaultIndex={1}
               // Default selected item index
-              placeholder={clients_text.name == null ? 'Select' : clients_text.name}
+              placeholder={clients_text == "" ? 'Select' : clients_text}
               // place holder for the search input
               resPtValue={false}
               // Reset textInput Value with true and false state
@@ -821,7 +872,7 @@ const captureImage = async (type) => {
               // Mapping of item array
               defaultIndex={1}
               // Default selected item index
-              placeholder={owners_text == null ? 'Select' : owners_text}
+              placeholder={owners_text == "" ? 'Select' : owners_text}
               // place holder for the search input
               resPtValue={false}
               // Reset textInput Value with true and false state
@@ -890,7 +941,7 @@ const captureImage = async (type) => {
               itemsContainerStyle={{
                 // Items container style you can pass maxHeight
                 // To restrict the items dropdown hieght
-                maxHeight: '60%',
+                maxHeight: '53%',
                 color: 'black',
                 borderWidth: 1,
                 borderColor: '#ccc',
@@ -899,7 +950,7 @@ const captureImage = async (type) => {
               // Mapping of item array
               defaultIndex={1}
               // Default selected item index
-              placeholder={qaOwner_text.name== null ? 'Select' : qaOwner_text.name}
+              placeholder={qaOwner_text== "" ? 'Select' : qaOwner_text.name}
               // place holder for the search input
               resPtValue={false}
               // Reset textInput Value with true and false state

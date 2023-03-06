@@ -66,24 +66,23 @@ const UserScreen = props => {
         console.error(`Error: ` + (error))
         if (error == "AxiosError: Request failed with status code 404") {
           alert("No issue found");
-          props.navigation.navigate('HomeScreen');
+          props.navigation.navigate('InitialScreen');
         }
 
       })
       .finally(() => setLoading(false));
   };
-   function extract_date(updated_at){
-    const dattetime = updated_at;
+   function extract_date(data){
+    const dattetime = data;
     //  "updated_at": "2022-11-14T14:22:11+05:00",
     const date_time = dattetime.split('T');
     const date = date_time[0].split('+');
   console.log(date);
   
-
 return date;
    }
-   function extract_time(updated_at){
-    const dattetime = updated_at;
+   function extract_time(timedata){
+    const dattetime = timedata;
     //  "updated_at": "2022-11-14T14:22:11+05:00",
     const date_time = dattetime.split('T');
     const date = date_time[0].split('+');
@@ -200,11 +199,57 @@ return timen;
                     
                    </View>
 
+                   <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5
+  }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      QA Status 
+                        
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      }}>
+                            {item.status.name ?? ''} 
+                     
+                      
+                    </Text>
+                    </View>
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      Ticket Status
+                        
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      }}>
+                 { item.resolution.name!=undefined ?  item.resolution.name: '' } 
+                     
+                      
+                    </Text>
+                    </View>
 
 
 
-
-                   <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
+                   {/* <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
                     <Text
                       style={{
                         fontSize: 15,
@@ -256,7 +301,7 @@ return timen;
                     
                     </Text>
         
-                   </View>
+                   </View> */}
                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
                     <Text
                       style={{
@@ -295,7 +340,7 @@ return timen;
                         textAlign: 'justify',
                       
                       }}>
-                    {  Moment( extract_date(item.created_at)).format('d-MMM-YY')  +" "+ Moment( extract_time(item.created_at),'HHmmss').format("HH:mm")   ?? ''} 
+                    { extract_date(item.created_at)  +" "+ Moment( extract_time(item.created_at),'HHmmss').format("HH:mm")   ?? ''} 
                     
                     </Text>
                     <Text
@@ -303,9 +348,9 @@ return timen;
                         fontSize: 15,
                         color: 'black',
                         textAlign: 'justify',
-                        marginLeft:76
+                        marginLeft:56
                       }}>
-                   { Moment( extract_date(item.updated_at)).format('d-MMM-YY') +" "+ Moment( extract_time(item.updated_at),'HHmmss').format("HH:mm")   ?? ''} 
+                   { extract_date(item.updated_at) +" "+ Moment( extract_time(item.updated_at),'HHmmss').format("HH:mm")   ?? ''} 
                     
                     </Text>
                     </View>
@@ -354,7 +399,7 @@ return timen;
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                         {item.reporter.real_name ?? ''} 
+                         {item.reporter.real_name!=undefined ? item.reporter.real_name : ''} 
                      
                       
                     </Text>
@@ -378,7 +423,7 @@ return timen;
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                   {item.handler.real_name ?? ''} 
+                   {item.handler.real_name!=undefined ? item.handler.real_name : ''} 
                      
                       
                     </Text>
@@ -534,7 +579,7 @@ return timen;
                   ) : (
                     <>
                       <View>
-                        {item.notes.map(secItem => (
+                        { item.notes==undefined ? [] : item.notes.map(secItem => (
                           <View
                             key={secItem.id}
                             style={{
@@ -552,7 +597,7 @@ return timen;
                             }}>
                             <Text style={{ color: 'black', paddingBottom: 3 }}>
                               {' '}
-                              👤 {secItem.reporter.real_name}
+                              👤 {secItem.reporter.real_name== undefined ? '' : secItem.reporter.real_name}
                             </Text>
 
                             <Text style={{ color: 'black', paddingBottom: 3 }}>
@@ -564,7 +609,7 @@ return timen;
                               🔗~{secItem.id}{' '}
                               {secItem.text != '' ? (
                                 <Text style={{ color: 'black', marginVertical: 5, paddingLeft: 5 }}>
-                                  {'\n  ' + secItem.text}
+                                  {'\n  ' + secItem.text== undefined ? '' :  secItem.text}
                                 </Text>
                               ) : (
                                 ''
@@ -582,7 +627,7 @@ return timen;
                                     borderWidth: 1,
                                     borderColor: '#E0E0E0',
                                   }}>
-                                  <Text style={{ color: '#2980B9' }}>📎 {seItem.filename}
+                                  <Text style={{ color: '#2980B9' }}>📎 {seItem.filename== undefined ? '' :   seItem.filename}
                                   </Text>
                                 </View>
                               ))}

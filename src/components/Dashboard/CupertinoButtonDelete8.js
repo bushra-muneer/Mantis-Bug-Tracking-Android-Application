@@ -17,8 +17,8 @@ function CupertinoButtonDelete8(props) {
     )} 
     }
  >
-    <Image   source={ImagesAssets.report_issue} style={styles.icon}  />
-      {/* <Icon name="ios-document" style={styles.icon}></Icon> */}
+    {/* <Image   source={ImagesAssets.report_issue} style={styles.icon}  /> */}
+      <Icon name="ios-document" style={styles.icon}></Icon>
     </TouchableOpacity>
   );
 }
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#142c44",
-   // fontSize: 50,
+    fontSize: 45,
    height:50,
    width:45,
   }

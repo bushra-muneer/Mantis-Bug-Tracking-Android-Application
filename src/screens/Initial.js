@@ -98,7 +98,7 @@ setUserDetails(global.userDetails);
     const getFilters = async () => {
       await axios
         .get(filters_url, {
-          headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+          headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
         })
         .then(response => {
           const all_filters = response.data.filters;
@@ -282,7 +282,7 @@ setUserDetails(global.userDetails);
                  itemsContainerStyle={{
                    // Items container style you can pass maxHeight
                    // To restrict the items dropdown hieght
-                   maxHeight: '95%',
+                   maxHeight: '88%',
                     color: 'black',
                    // borderWidth: 1,
                    //borderColor: '#ccc',

@@ -81,7 +81,7 @@ const { width } = Dimensions.get("window");
         setMasterDataSource(allissues);
       
         console.log(allissues);
-    }, 20000)
+    }, 1000)
 
 })
       

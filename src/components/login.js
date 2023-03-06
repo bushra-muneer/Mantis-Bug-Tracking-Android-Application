@@ -151,68 +151,68 @@ useEffect(() => {
     }
   })();
 }, []);
-  const Authenticate_User= async ()=>{
-    setLoading(true);
-    if (username!="" && password!=""){
+//   const Authenticate_User= async ()=>{
+//     setLoading(true);
+//     if (username!="" && password!=""){
       
-    await axios.get(login_uri,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
-    .then((response)=>{
+//     await axios.get(login_uri,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
+//     .then((response)=>{
        
-    const users = response.data;
-    global.uid=response.data.id;
-    global.ac_level=response.data.access_level.id;
-    setUser(users);
-    setUuid(response.data.id);
-    setAccess_level(response.data.access_level.id);
+//     const users = response.data;
+//     global.uid=response.data.id;
+//     global.ac_level=response.data.access_level.id;
+//     setUser(users);
+//     setUuid(response.data.id);
+//     setAccess_level(response.data.access_level.id);
 
-    setTimeout(() => {
-      console.log(user);
+//     setTimeout(() => {
+//       console.log(user);
 
-      console.log(uuid);
-      console.log(access_level);
-     if ( user!=''){
-        console.log('success');
-        setLoading(false);
-       // alert('success');
-       props.navigation.navigate('InitialScreen',
-       {
-        isLoggedIn: isLoggedIn,
-        userDetails:userDetails,
-    }
-       )
+//       console.log(uuid);
+//       console.log(access_level);
+//      if ( user!=''){
+//         console.log('success');
+//         setLoading(false);
+//        // alert('success');
+//        props.navigation.navigate('InitialScreen',
+//        {
+//         isLoggedIn: isLoggedIn,
+//         userDetails:userDetails,
+//     }
+//        )
       
-        onChangeUsername('')
-        onChangePassword('')
-     }
-    }, 4000)
+//         onChangeUsername('')
+//         onChangePassword('')
+//      }
+//     }, 4000)
    
 
-})
+// })
       
-    .catch(error =>alert("Inavlid Login"))
+//     .catch(error =>alert("Invalid Login"))
   
-    }else {
+//     }else {
 
-      alert("please enter username and password");
-    }
+//       alert("please enter username and password");
+//     }
 
-    await Keychain.setGenericPassword(username, password);
-    setIsLoggedIn(true);
-    setUserDetails({password, username});
-  }
+//     await Keychain.setGenericPassword(username, password);
+//     setIsLoggedIn(true);
+//     setUserDetails({password, username});
+//   }
 
-
+function loginacll(){
+setLoading(true);
+Authenticate_login();
+}
 
   const Authenticate_login= async ()=>{
-
+    setLoading(true);
   const login_uri= 'http://mantis.sibisoft.com/api/rest/internal/authenticate_login?username='+username+'&password='+password;
-  
+ 
     if (username!="" && password!=""){
-      
-      setLoading(true);
     await axios.get(login_uri,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
     .then((response)=> {
-      console.log("hereEE");
      console.log(response);
     global.pref_id=response.data.default_project;
     console.log(response.data.default_project);
@@ -229,9 +229,10 @@ useEffect(() => {
     console.log(access_level);
     console.log("here");
     if ( response.data!=''){
+      setLoading(false);
       console.log("inside if");
       console.log(response);
-      setLoading(false);
+ 
         console.log('success');
       onChangeUsername(userDetails.username)
     onChangePassword('')
@@ -272,7 +273,7 @@ useEffect(() => {
 
 })
       
-    .catch(error =>alert("Inavlid Login"),  setLoading(false))
+    .catch(error =>alert("Invalid Login"),  setLoading(false))
   
     }else {
 
@@ -432,7 +433,7 @@ style={{ marginLeft:28}}
   onValueChange={(value) => toggleRememberMe(value)}
   />
 </View>
-      <Pressable style={styles.button} onPress={Authenticate_login}>
+      <Pressable style={styles.button} onPress= {loginacll}>
         <Text style={styles.textstyle}>LOGIN</Text>
       
      

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet,Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from '@react-navigation/native';
 
+import{ ImagesAssets } from '../../../assets/ImageAssets';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 function CupertinoButtonDelete2(props) {
   
@@ -20,7 +21,9 @@ function CupertinoButtonDelete2(props) {
      }
     
     >
-      <Icon name="ios-checkmark-circle" style={styles.icon}></Icon>
+       <Image   source={ImagesAssets.assignedLogo} style={styles.icon}  />
+
+      {/* <Icon name="ios-checkmark-circle" style={styles.icon}></Icon> */}
     </TouchableOpacity>
   );
 }
@@ -33,9 +36,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 5
   },
+  // icon: {
+  //   color: "#142c44",
+  //   fontSize: 50
+  // }
   icon: {
     color: "#142c44",
-    fontSize: 50
+   // fontSize: 50,
+   height:50,
+   width:50,
   }
 });
 

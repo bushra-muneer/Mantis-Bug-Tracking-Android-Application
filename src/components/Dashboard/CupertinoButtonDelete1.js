@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet,Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import{ ImagesAssets } from '../../../assets/ImageAssets';
 function CupertinoButtonDelete1(props) {
 
   const navigation = useNavigation();
@@ -12,8 +13,10 @@ function CupertinoButtonDelete1(props) {
     onPress={() => { global.buttonId="monitored";
     
     navigation.navigate('Monitored by me')}}>
- 
-      <Icon name="md-checkbox-outline" style={styles.icon}></Icon>
+         <Image   source={ImagesAssets.monitored_issue} style={styles.icon}  />
+
+{/*  
+      <Icon name="md-checkbox-outline" style={styles.icon}></Icon> */}
     </TouchableOpacity>
   );
 }
@@ -39,9 +42,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#142c44",
-    fontSize: 50,
-    padding: 0
+   // fontSize: 50,
+   height:55,
+   width:45,
   }
+
 });
 
 export default CupertinoButtonDelete1;

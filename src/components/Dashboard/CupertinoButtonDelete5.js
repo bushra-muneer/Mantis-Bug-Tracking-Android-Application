@@ -1,15 +1,18 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet,Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+
+import{ ImagesAssets } from '../../../assets/ImageAssets';
 function CupertinoButtonDelete5(props) {
   const navigations = useNavigation();
   return (
     <TouchableOpacity style={[styles.container, props.style]}
     onPress={() =>navigations.navigate('AboutScreen')}>
-    
-      <Icon name="md-information-circle-outline" style={styles.icon}></Icon>
+     <Image   source={ImagesAssets.AboutLogo} style={styles.icon}  />
+
+      {/* <Icon name="md-information-circle-outline" style={styles.icon}></Icon> */}
     </TouchableOpacity>
   );
 }
@@ -30,9 +33,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 0
   },
+  // icon: {
+  //   color: "#142c44",
+  //   fontSize: 50
+  // }
   icon: {
     color: "#142c44",
-    fontSize: 50
+   // fontSize: 50,
+   height:47,
+   width:45,
   }
 });
 
