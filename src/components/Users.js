@@ -16,17 +16,18 @@ const { width } = Dimensions.get("window");
   const [buttonIdd, setButtonId] = React.useState('');
 
     const KEYS_TO_FILTERS = ['id'];
-
+    const [filt, setFilt] = useState('');
     const [isLoading, setLoading] = useState(false);
     const [users, setUsers] = useState([]); 
     const [search, setSearch] = useState('');
     const [searchTerm, searchUpdated] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
+   
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [uri, setUri] = useState('');
 
     // const url='http://mantis.sibisoft.com/api/rest/issues';
-     const url='http://mantis.sibisoft.com/api/rest/issues';
+    //  const url='http://mantis.sibisoft.com/api/rest/issues';
 
     //const url='http://192.168.8.102:1234/mantis/api/rest/issues';
 //const getIssues_url = baseurl + '/api/rest/issues/' + uid + '/' + id;
@@ -38,38 +39,39 @@ const { width } = Dimensions.get("window");
     const [searchText, setSearchText] = useState();
 
 
-    const getUsers= async ()=>{
-      setUsers([]);
-      setFilteredDataSource([]);
-      setMasterDataSource([]);
-    //   if (buttonIdd=="unassigned"){
+    const getFiltersBasedIssue= async ()=>{
+      const url=( "http://mantis.sibisoft.com/api/rest/issues?filter_id="+filt);
+      console.log(url);
+         
+        await axios.get(url,{ headers: {'Authorization': '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'} })
+        .then((response)=>{
+        const allissues = response.data.issues;
+        setUsers([]);
+        setFilteredDataSource([]);
+        setMasterDataSource([]);
 
-    //     setUri('http://mantis.sibisoft.com/api/rest/issues'+global.uid+'/?filter_id=unassigned')
-    //   }
-    //   else if (buttonIdd=="assigned"){
-    //     setUri('http://mantis.sibisoft.com/api/rest/issues'+global.uid+'/?filter_id=assigned')
-        
-    //   }
-    //   else if (buttonIdd=="monitored"){
-    //     setUri('http://mantis.sibisoft.com/api/rest/issues'+global.uid+'/?filter_id=monitored')
-      
-    //   }
-    //   else if (buttonIdd=="reported"){
-    //     setUri('http://mantis.sibisoft.com/api/rest/issues'+global.uid+'/?filter_id=reported')
-    //   }
-    //   else if (buttonIdd=="View Issues"){
-    //     setUri('http://mantis.sibisoft.com/api/rest/issues');
-    //   }
-    //  else if (buttonIdd=="issues"){
-    //   setUri('http://mantis.sibisoft.com/api/rest/issues');
-    //  }
-    //  else {
-    //   setUri('http://mantis.sibisoft.com/api/rest/issues');
-    //  }
+        setUsers(allissues);
+        setFilteredDataSource(allissues);
+        setMasterDataSource(allissues);
+        setTimeout(() => {
+            setUsers(allissues);
+            setFilteredDataSource(allissues);
+            setMasterDataSource(allissues);
+       
+            console.log(allissues);
+        }, 20000)
+    
+    })
+          
+        .catch(error =>console.error(`Error: $(error)`))
+        .finally(() => setLoading(false));
+        }
+    
+    const getUsers= async (url)=>{
 
-    //   console.log(uri);
+  console.log(url);
      
-    await axios.get(url,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
+    await axios.get(url,{ headers: {'Authorization': '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'} })
     .then((response)=>{
     const allissues = response.data.issues;
    
@@ -80,7 +82,7 @@ const { width } = Dimensions.get("window");
         setUsers(allissues);
         setFilteredDataSource(allissues);
         setMasterDataSource(allissues);
-      
+   
         console.log(allissues);
     }, 20000)
 
@@ -124,97 +126,63 @@ const { width } = Dimensions.get("window");
       };
 
 
-    // const searchFilterFunction = (searchText) => {
-    //     // Check if searched text is not blank
-    //     if (searchText) {
-    //       // Inserted text is not blank
-    //       // Filter the masterDataSource
-    //       // Update FilteredDataSource
-
-
-    //       filteredDataSource.filter((x) =>
-    //             x.id.toString().includes(searchText.toString())
-    //       )
-    //       const newData = masterDataSource.filter(
-    //         function (item) {
-    //           const itemData = item.id
-    //             ? item.id.toString()
-    //             : ''.toString();
-    //           const textData = searchText.toString();
-    //           return itemData.indexOf(textData) > -1;
-    //       });
-    //       setFilteredDataSource(newData);
-    //       setSearchText(searchText);
-    //     } else {
-    //       // Inserted text is blank
-    //       // Update FilteredDataSource with masterDataSource
-    //       setFilteredDataSource(masterDataSource);
-    //       setSearchText(searchText);
-    //     }
-    //   };
-
-
-
-    function renderHeader() {
-        return (
-          <View
-            // style={{
-            //   backgroundColor: '#fff',
-            //   padding: 4,
-            //   marginVertical: 4,
-            //   borderRadius: 15
-            // }}
-          > 
-
-
-
-<TextInput
-        placeholder="Enter Issue #"
-        style={{ backgroundColor: '#fff', paddingHorizontal: 20,color:'black', height: 40,
-        margin: 12,
-        // borderWidth: 1,
-        padding: 10, }}
-        keyboardType={'phone-pad'}
-        placeholderTextColor="#000" 
-       onChangeText={(text) => searchFilterFunction(text)}
-         value={search}
-        //  onKeyPress={({ nativeEvent,text }) => {
-        //     if (nativeEvent.key === 'Backspace') {
-        //      setSearch('');
-            
-        //     }
-        //     if (nativeEvent.key === 'Enter'){
-        //         searchFilterFunction(text)
-        //     }
-        //   }}
-          
-        // onSubmitEditing={(value) =>  {setSearchText(value.nativeEvent.text)
-        //  }}
-    
-    />
-
-
-          </View>
-        );
-      }
      
     useEffect(() => {
       const uid =  global.uid;
+      const fil=global.filt;
+      setFilt(fil);
+      console.log("*******choosen filter*****");
+      console.log(filt);
+      console.log("************************");
       console.log(uid);
       console.log(id);
-      setUsers([]);
+      setUsers([]); 
       setFilteredDataSource([]);
       setMasterDataSource([]);
     //  alert(global.buttonId);
     
      setButtonId(global.buttonId);
      
-        setLoading(true);
+     
+  //  const  url= ("http://mantis.sibisoft.com/api/rest/issues");
+  //  setLoading(true);
         
-        getUsers();
+  //  getUsers(url);
+ 
+    // if ( filt!=undefined){
+
+    // const url=( "http://mantis.sibisoft.com/api/rest/issues?filter_id="+filt);
+    // setLoading(true);
+        
+    // getUsers(url);
+   
+  
+  
+   // }
+
+    
         LogBox.ignoreAllLogs();
     }, [global.buttonId,buttonIdd]);
-    const filteredDaaSource = searchTerm =='' ? filteredDataSource :filteredDataSource.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
+    
+    useEffect(() => {
+      setUsers([]); 
+        setFilteredDataSource([]);
+        setMasterDataSource([]);  
+   
+      if (filt!=undefined){ 
+       
+        const url=( "http://mantis.sibisoft.com/api/rest/issues?filter_id="+filt);
+        setLoading(true);
+      getFiltersBasedIssue();
+        
+      }else{
+       
+        const url=( "http://mantis.sibisoft.com/api/rest/issues");
+        setLoading(true);
+        getUsers(url);
+      }
+    }, [filt]);
+    const filteredDaaSource = (searchTerm =='' ? filteredDataSource :filteredDataSource.filter(createFilter(searchTerm, KEYS_TO_FILTERS))) ?? []
     return(
         
         <View style={{ padding: 2,color:'black' }}>
@@ -228,32 +196,7 @@ const { width } = Dimensions.get("window");
                 
                 <View  >
                      <Text style={styles.title}>{'Issues'}</Text>
-                {/* <FlatList
-                    data={filteredDataSource}
-                    ListHeaderComponent={renderHeader}
-                    keyExtractor={({ id }) => id.toString()}
-                    renderItem={
-                        ({ item }) =>
-                        <TouchableOpacity
-                            onPress={() =>
-                                props.navigation.navigate('UserScreen', {
-                                    id: item.id
-                                })
-                            }
-                        >
-                            <View>
-                                <User user={item} />
-                            </View>
-                        </TouchableOpacity>
-                    }
-                />
-                 */}
-                   {/* <SearchInput 
-          onChangeText={(term) => { searchUpdated(term) }} 
-          style={styles.searchInput}
-          placeholder="Enter Issue #"
-      
-          /> */}
+              
            <View style={styles.cupertinoSearchBarBasic2}>
       <View style={styles.inputBox}>
         {/* <Icon name="magnify" style={styles.inputLeftIcon}></Icon> */}
@@ -263,27 +206,11 @@ const { width } = Dimensions.get("window");
       onChangeText={(searchTerm) => { searchUpdated(searchTerm) }} 
             
  ></TextInput>
-        {/* <IconButton
-              icon="magnify"
-              size={25}
-          
-           
-              onPress={() =>{
-        anotherFunc() 
-
-                // navigation.navigate('UserScreen', {
-                //   id: text
-                // })
-               
-                callSearch(text)
-              }
-              
-              }
-            /> */}
+        
       </View>
     </View>
                  <ScrollView>
-          { filteredDaaSource.map(item => {
+          {filteredDaaSource.map(item => {
             return (
                 <TouchableOpacity 
                 onPress={() => (

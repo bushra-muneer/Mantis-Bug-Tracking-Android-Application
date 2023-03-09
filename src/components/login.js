@@ -20,8 +20,8 @@ const LoginScreen = props => {
   var id,name ;
   
   const [isLoading, setLoading] = useState(false);
-  const [username, onChangeUsername] = React.useState(global.userna ?? '');
-  const [password, onChangePassword] = React.useState('');
+  const [username, onChangeUsername] = React.useState(global.userna ?? 'bushramuneer');
+  const [password, onChangePassword] = React.useState('besttech_001');
   const [user, setUser] = React.useState([]);
    const [uuid, setUuid] = React.useState('');
   const [access_level, setAccess_level] = React.useState('');
@@ -155,7 +155,7 @@ useEffect(() => {
 //     setLoading(true);
 //     if (username!="" && password!=""){
       
-//     await axios.get(login_uri,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
+//     await axios.get(login_uri,{ headers: {'Authorization': '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'} })
 //     .then((response)=>{
        
 //     const users = response.data;
@@ -211,7 +211,7 @@ Authenticate_login();
   const login_uri= 'http://mantis.sibisoft.com/api/rest/internal/authenticate_login?username='+username+'&password='+password;
  
     if (username!="" && password!=""){
-    await axios.get(login_uri,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
+    await axios.get(login_uri,{ headers: {'Authorization': '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'} })
     .then((response)=> {
      console.log(response);
     global.pref_id=response.data.default_project;

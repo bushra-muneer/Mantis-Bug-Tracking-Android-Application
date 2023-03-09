@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View,Keyboard, KeyboardAvoidingView} from 'react-native';
+import { StyleSheet, Text, View, Keyboard, KeyboardAvoidingView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IconButton } from 'react-native-paper';
@@ -10,7 +10,7 @@ import { IconButton } from 'react-native-paper';
 // import CupertinoButtonPurple5 from "../components/CupertinoButtonPurple5";
 // import CupertinoButtonPurple6 from "../components/CupertinoButtonPurple6";
 // import CupertinoButtonPurple7 from "../components/CupertinoButtonPurple7";
- import CupertinoSearchBarBasic from "../components/CupertinoSearchBarBasic";
+import CupertinoSearchBarBasic from "../components/CupertinoSearchBarBasic";
 
 
 
@@ -27,340 +27,387 @@ import CupertinoButtonDelete5 from "../components/Dashboard/CupertinoButtonDelet
 
 
 import * as Keychain from "react-native-keychain";
-import { LogBox  } from 'react-native';
+import { LogBox } from 'react-native';
 
 import SearchableDropdown from 'react-native-searchable-dropdown';
+import { PrivateValueStore } from '@react-navigation/native';
 //import { ScrollView } from 'react-native-gesture-handler';
 
 const InitialScreen = props => {
 
-  const uid =  global.uid;
+  const uid = global.uid;
   console.log(uid);
-  const baseurl='http://mantis.sibisoft.com';
+  const baseurl = 'http://mantis.sibisoft.com';
   const qaOwners_url =
-  baseurl+'/api/rest/projects/rest_projects_get_uid/'+uid;
+    baseurl + '/api/rest/projects/rest_projects_get_uid/' + uid;
   const filters_url =
-  baseurl+'/api/rest/filters';
+    baseurl + '/api/rest/filters';
 
-  
+  const filt_url =
+  //baseurl + '/api/rest/filters/user/74';
+      baseurl + '/api/rest/filters/user/'+uid;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(true);
 
   const [updatedQA_OwnersData, setUpdatedQA_OwnersData] = useState([]);
   const [updatedFiltersData, setUpdatedFiltersData] = useState([]);
-
+  const [updatedPrivateFiltersData, setUpdatedPrivateFiltersData] = useState([]);
+  const [FiltersData, setFiltersData] = useState([]);
   const [updatedClientsData, setUpdatedClientsData] = useState([]);
   const [module_text, setModuleText] = useState('');
 
   const [qaOwner_text, setQA_OwnerText] = useState('');
   const [filter_text, setFilterText] = useState('');
 
-    useEffect(() => {
-      getQAOwners();
-setIsLoggedIn(global.loggedin);
-setUserDetails(global.userDetails);
-
-      LogBox.ignoreAllLogs();
-      const timeout = setTimeout(() => {
-        setLoading(false);
-        console.log(loading);
-      }, 1000);
+  useEffect(() => {
+    getFilters();
+    // getPrivateFilter();
+    getQAOwners();
    
-      getQAOwners();
+    
+    setIsLoggedIn(global.loggedin);
+    setUserDetails(global.userDetails);
+  
+         
+    LogBox.ignoreAllLogs();
+    const timeout = setTimeout(() => {
       getFilters();
-      return () => clearTimeout(timeout);
-    }, [loading]);
+      // getPrivateFilter();
+      setLoading(false);
+      console.log(loading);
+    }, 4000);
 
-    const getQAOwnersById_func = t => {
-     
-      setQA_OwnerText(t);
-      console.log(t);
-    };
-    const getFiltersById_func = t => {
-      setFilterText(t);
-      console.log(t);
-    };
-
-
-    const handleLogout = async()=>{
-      const logout = await Keychain.resetGenericPassword();
-      console.log({logout});
-      props.navigation.navigate('LoginScreen'
+    getQAOwners();
+    getFilters();
+  //  getPrivateFilter();
    
-      )
-     
-      if(logout){
-        setIsLoggedIn(false);
-        setUserDetails({});
-      }
-    }
-    const getFilters = async () => {
-      await axios
-        .get(filters_url, {
-          headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
-        })
-        .then(response => {
-          const all_filters = response.data.filters;
-  
+    return () => clearTimeout(timeout);
+  }, [loading]);
 
-  
-          setUpdatedFiltersData(all_filters);
-  
-          console.log('---------------Project-------------------');
-          console.log(updatedFiltersData);
-        })
-        .catch(error => console.error(`Error: $(error)`))
-        .finally(() => setLoading(false));
-    };
-    
-    const getQAOwners = async () => {
-    //  alert(global.pref_id);
-      await axios
-        .get(qaOwners_url, {
-          headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
-        })
-        .then(response => {
-          const all_qaOwners = response.data.projects;
-  
+  const getQAOwnersById_func = t => {
 
-  
-          setUpdatedQA_OwnersData(all_qaOwners);
-  
-          console.log('---------------Project-------------------');
-          console.log(updatedQA_OwnersData);
-          if (global.pref_id==6){
-            setQA_OwnerText("Production")
-          }
-          else if (global.pref_id==3){
-            setQA_OwnerText("Northstar")
-          }
-          else if (global.pref_id==0 || global.pref_id==""|| global.pref_id ==undefined){
-            setQA_OwnerText("Select Project")
-          }
-       
-        })
-        .catch(error => console.error(`Error: $(error)`))
-        .finally(() => setLoading(false));
-    };
-    
-  
-  return (
-<>
-<View style={styles.container1}>
-<Text style={{color:'black',marginLeft:25, fontWeight:'500', paddingTop:10,fontSize:15}} >Select Project </Text>
-<KeyboardAvoidingView behavior='height'   onAccessibilityTap={()=>Keyboard.dismiss()} style={{width: '100%'}} >
-           
-           <View style={styles.container_dd}>
-       
-                         <SearchableDropdown 
-                 onTextChange={qaOwners_text => {console.log(qaOwners_text)}}
-                 // Listner on the searchable input
-                 onItemSelect={item => {
-                   getQAOwnersById_func(item);
-                 }}
-                
-                 // Called after the selection
-                 containerStyle={{marginTop:10,paddingHorizontal:22}}
-                 // Suggestion container style
-                 textInputStyle={{
-                   // Inserted text style
-                   padding: 7,
-                  // borderWidth: 1,
-               //    borderColor: '#ccc',
-                   backgroundColor: 'white',
-                   color: 'black',
-                 //  padding: 12,
-                   //borderWidth: 1,
-                 //  borderColor: '#ccc',
-                   borderRadius: 5,
-                 }}
-                 listProps={
-                   {
-                     nestedScrollEnabled: true,
-                   }
-                 }
-                 placeholderTextColor={'black'}
-                 itemStyle={{
-                   // Single dropdown item style
-                   padding: 10,
-                   //marginTop: 2,
-                   //borderWidth: 1,
-                   //borderLeftWidth:  0,
-                   //borderRightWidth:  0,
-                   //borderTopWidth:  0,
-                   backgroundColor: 'white',
-                  // borderColor: '#ccc',
-                   color: 'black',
-                 }}
-                 itemTextStyle={{
-                   // Text style of a single dropdown item
+    setQA_OwnerText(t);
+    console.log(t);
+  };
+  const getFiltersById_func = t => {
+    setFilterText(t);
+    console.log(t);
+
+    global.filt = t.id;
+    console.log(global.filt);
+  };
+
+
+  // const handleLogout = async()=>{
+  //   const logout = await Keychain.resetGenericPassword();
+  //   console.log({logout});
+  //   props.navigation.navigate('LoginScreen'
+
+  //   )
+
+  //   if(logout){
+  //     setIsLoggedIn(false);
+  //     setUserDetails({});
+  //   }
+  // }
+  const getFilters = async () => {
+    await axios
+      .get(filters_url, {
+        headers: { Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1' },
+      })
+      .then(response => {
+        const all_filters = response.data.filters;
+        setUpdatedFiltersData(all_filters);
    
-                   color: 'black',
-                 }}
-                 
-                 itemsContainerStyle={{
-                   // Items container style you can pass maxHeight
-                   // To restrict the items dropdown hieght
-                   maxHeight: '100%',
-                    color: 'black',
-                   // borderWidth: 1,
-                   //borderColor: '#ccc',
-                 }}
-                 items={updatedQA_OwnersData}
-                 // Mapping of item array
-                 defaultIndex={1}
-                 // Default selected item index
-                 placeholder={qaOwner_text.name== null ? (qaOwner_text ?? 'Select') : qaOwner_text.name}
-                 // place holder for the search input
-                 resPtValue={false}
-                 // Reset textInput Value with true and false state
-                 underlineColorAndroid="transparent"
-                
-                 // To remove the underline from the android input
-               />
-           
-            
-              </View>
-          
-           </KeyboardAvoidingView>
-     
-        
-
-<Text style={{color:'black',marginLeft:25, fontWeight:'500', paddingTop:10,fontSize:15}} >Select Filter </Text>
-
-<KeyboardAvoidingView behavior='height'   onAccessibilityTap={()=>Keyboard.dismiss()} style={{width: '100%'}} >
-           
-           <View style={styles.container_dd}>
-       
-                         <SearchableDropdown 
-                 onTextChange={filter_text => {console.log(filter_text)}}
-                 // Listner on the searchable input
-                 onItemSelect={item => {
-                   getFiltersById_func(item);
-                 }}
-                
-                 // Called after the selection
-                 containerStyle={{marginTop:10,paddingHorizontal:22}}
-                 // Suggestion container style
-                 textInputStyle={{
-                   // Inserted text style
-                   padding: 7,
-                  // borderWidth: 1,
-               //    borderColor: '#ccc',
-                   backgroundColor: 'white',
-                   color: 'black',
-                 //  padding: 12,
-                   //borderWidth: 1,
-                 //  borderColor: '#ccc',
-                   borderRadius: 5,
-                 }}
-                 listProps={
-                   {
-                     nestedScrollEnabled: true,
-                   }
-                 }
-                 placeholderTextColor={'black'}
-                 itemStyle={{
-                   // Single dropdown item style
-                   padding: 10,
-                   //marginTop: 2,
-                   //borderWidth: 1,
-                   //borderLeftWidth:  0,
-                   //borderRightWidth:  0,
-                   //borderTopWidth:  0,
-                   backgroundColor: 'white',
-                  // borderColor: '#ccc',
-                   color: 'black',
-                 }}
-                 itemTextStyle={{
-                   // Text style of a single dropdown item
-   
-                   color: 'black',
-                 }}
-                 
-                 itemsContainerStyle={{
-                   // Items container style you can pass maxHeight
-                   // To restrict the items dropdown hieght
-                   maxHeight: '88%',
-                    color: 'black',
-                   // borderWidth: 1,
-                   //borderColor: '#ccc',
-                 }}
-                 items={updatedFiltersData}
-                 // Mapping of item array
-                 defaultIndex={1}
-                 // Default selected item index
-                 placeholder={filter_text.name== null ? 'Select Filter' : filter_text.name}
-                 // place holder for the search input
-                 resPtValue={false}
-                 // Reset textInput Value with true and false state
-                 underlineColorAndroid="transparent"
-                
-                 // To remove the underline from the android input
-               />
-           
-            
-              </View>
-          
-           </KeyboardAvoidingView>
-<View style={{flexDirection:'row' , flexWrap:'wrap',width:140,alignSelf:'center',marginTop:20,
-    borderBottomColor: '#142c44',
-    
-    borderBottomWidth: 3,}}>
-      </View>
-    
-      <View style={styles.viewissuesRow}>
-        <CupertinoButtonDelete
-          style={styles.viewissues}
-        ></CupertinoButtonDelete>
-        <CupertinoButtonDelete2
-          style={styles.assignedbtn}
-        ></CupertinoButtonDelete2>
-        <CupertinoButtonDelete3
-          style={styles.unassignedbutton}
-        ></CupertinoButtonDelete3>
-      </View>
-      <View style={styles.monitoredbuttonRow}>
-        <CupertinoButtonDelete1
-          style={styles.monitoredbutton}
-        ></CupertinoButtonDelete1>
-        <CupertinoButtonDelete4
-          style={styles.reportissuebtn}
-        ></CupertinoButtonDelete4>
-        <CupertinoButtonDelete8
-          style={styles.reportedissue_button}
-        ></CupertinoButtonDelete8>
-      </View>
-      <View style={styles.viewIssuesRow}>
-        <Text style={styles.viewIssues}>View Issues</Text>
-        <Text style={styles.assigned}>Assigned</Text>
-        <Text style={styles.unassigned}>Unassigned</Text>
-      </View>
-      <View style={styles.monitoredRow}>
-        <Text style={styles.monitored}>Monitored</Text>
-        <Text style={styles.reportIssue}>Report Issue</Text>
-        <Text style={styles.reported}>Reported</Text>
-      </View>
-      <View style={styles.filtersbtnRow}>
-        <CupertinoButtonDelete6
-          style={styles.filtersbtn}
-        ></CupertinoButtonDelete6>
-        <CupertinoButtonDelete7
-          style={styles.logoutbtn}
-        ></CupertinoButtonDelete7>
-        <CupertinoButtonDelete5
-          style={styles.aboutbtn}
-        ></CupertinoButtonDelete5>
-      </View>
-      <View style={styles.filtersRow}>
-        <Text style={styles.filters}>filters</Text>
-        <Text style={styles.logout}>Logout</Text>
-        <Text style={styles.about}>About</Text>
-      </View>
+       console.log('---------------All Public Filters-------------------');
+        console.log(updatedFiltersData);
+      setFiltersData(updatedFiltersData);
+      })
+      .catch(error => console.error(`Error: $(error)`))
+      .finally(() => setLoading(false));
+  };
+  // const getPrivateFilter = async () => {
+  //   await axios
+  //     .get(filt_url, {
+  //       headers: { Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1' },
+  //     })
+  //     .then(response => {
       
+  //       const all_filters = response.data;
+  //       // console.log( (all_filters));
+  //    //   setUpdatedPrivateFiltersData(all_filters);
+
+  //    setUpdatedPrivateFiltersData(all_filters.filter(function(x) { return x.name !== "" })); 
+
+  //        console.log( (updatedPrivateFiltersData));
+
+      
+
+  //     //   console.log('---------------Public Filters-------------------');
+  //     //  console.log(updatedFiltersData);
+  //       console.log('---------------Private Filters-------------------');
+  //       console.log(updatedPrivateFiltersData);
+  //       setFiltersData([]);
+  //  var obj = Object.assign(updatedFiltersData, updatedPrivateFiltersData);
+  //       // console.log(obj);
+             
+  //         setFiltersData(obj);
    
-{/* <View
+  //         console.log('---------------All Filters-------------------');
+  //     console.log(FiltersData);
+   
+  //     })
+  //     .catch(error => console.error(`Error: $(error)`))
+  //     .finally(() => setLoading(false));
+  // };
+
+  const getQAOwners = async () => {
+    //  alert(global.pref_id);
+    await axios
+      .get(qaOwners_url, {
+        headers: { Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1' },
+      })
+      .then(response => {
+        const all_qaOwners = response.data.projects;
+        setUpdatedQA_OwnersData(all_qaOwners);
+
+        console.log('---------------Project-------------------');
+        console.log(updatedQA_OwnersData);
+        if (global.pref_id == 6) {
+          setQA_OwnerText("Production")
+        }
+        else if (global.pref_id == 3) {
+          setQA_OwnerText("Northstar")
+        }
+        else if (global.pref_id == 0 || global.pref_id == "" || global.pref_id == undefined) {
+          setQA_OwnerText("Select Project")
+        }
+
+      })
+      .catch(error => console.error(`Error: $(error)`))
+      .finally(() => setLoading(false));
+  };
+
+
+  return (
+    <>
+      <View style={styles.container1}>
+        <Text style={{ color: 'black', marginLeft: 25, fontWeight: '500', paddingTop: 10, fontSize: 15 }} >Select Project </Text>
+        <KeyboardAvoidingView behavior='height' onAccessibilityTap={() => Keyboard.dismiss()} style={{ width: '100%' }} >
+
+          <View style={styles.container_dd}>
+
+            <SearchableDropdown
+              onTextChange={qaOwners_text => { console.log(qaOwners_text) }}
+              // Listner on the searchable input
+              onItemSelect={item => {
+                getQAOwnersById_func(item);
+              }}
+
+              // Called after the selection
+              containerStyle={{ marginTop: 10, paddingHorizontal: 22 }}
+              // Suggestion container style
+              textInputStyle={{
+                // Inserted text style
+                padding: 7,
+                // borderWidth: 1,
+                //    borderColor: '#ccc',
+                backgroundColor: 'white',
+                color: 'black',
+                //  padding: 12,
+                //borderWidth: 1,
+                //  borderColor: '#ccc',
+                borderRadius: 5,
+              }}
+              listProps={
+                {
+                  nestedScrollEnabled: true,
+                }
+              }
+              placeholderTextColor={'black'}
+              itemStyle={{
+                // Single dropdown item style
+                padding: 10,
+                //marginTop: 2,
+                //borderWidth: 1,
+                //borderLeftWidth:  0,
+                //borderRightWidth:  0,
+                //borderTopWidth:  0,
+                backgroundColor: 'white',
+                // borderColor: '#ccc',
+                color: 'black',
+              }}
+              itemTextStyle={{
+                // Text style of a single dropdown item
+
+                color: 'black',
+              }}
+
+              itemsContainerStyle={{
+                // Items container style you can pass maxHeight
+                // To restrict the items dropdown hieght
+                maxHeight: '100%',
+                color: 'black',
+                // borderWidth: 1,
+                //borderColor: '#ccc',
+              }}
+              items={updatedQA_OwnersData}
+              // Mapping of item array
+              defaultIndex={1}
+              // Default selected item index
+              placeholder={qaOwner_text.name == null ? (qaOwner_text ?? 'Select') : qaOwner_text.name}
+              // place holder for the search input
+              resPtValue={false}
+              // Reset textInput Value with true and false state
+              underlineColorAndroid="transparent"
+
+            // To remove the underline from the android input
+            />
+
+
+          </View>
+
+        </KeyboardAvoidingView>
+
+
+
+        <Text style={{ color: 'black', marginLeft: 25, fontWeight: '500', paddingTop: 10, fontSize: 15 }} >Select Filter </Text>
+
+        <KeyboardAvoidingView behavior='height' onAccessibilityTap={() => Keyboard.dismiss()} style={{ width: '100%' }} >
+
+          <View style={styles.container_dd}>
+
+            <SearchableDropdown
+              onTextChange={filter_text => { console.log(filter_text), global.filter_choosen = filter_text.name }}
+              // Listner on the searchable input
+              onItemSelect={item => {
+                getFiltersById_func(item);
+              }}
+
+              // Called after the selection
+              containerStyle={{ marginTop: 10, paddingHorizontal: 22 }}
+              // Suggestion container style
+              textInputStyle={{
+                // Inserted text style
+                padding: 7,
+                // borderWidth: 1,
+                //    borderColor: '#ccc',
+                backgroundColor: 'white',
+                color: 'black',
+                //  padding: 12,
+                //borderWidth: 1,
+                //  borderColor: '#ccc',
+                borderRadius: 5,
+              }}
+              listProps={
+                {
+                  nestedScrollEnabled: true,
+                }
+              }
+              placeholderTextColor={'black'}
+              itemStyle={{
+                // Single dropdown item style
+                padding: 10,
+                //marginTop: 2,
+                //borderWidth: 1,
+                //borderLeftWidth:  0,
+                //borderRightWidth:  0,
+                //borderTopWidth:  0,
+                backgroundColor: 'white',
+                // borderColor: '#ccc',
+                color: 'black',
+              }}
+              itemTextStyle={{
+                // Text style of a single dropdown item
+
+                color: 'black',
+              }}
+
+              itemsContainerStyle={{
+                // Items container style you can pass maxHeight
+                // To restrict the items dropdown hieght
+                maxHeight: '88%',
+                color: 'black',
+                // borderWidth: 1,
+                //borderColor: '#ccc',
+              }}
+              items={updatedFiltersData}
+              // Mapping of item array
+              defaultIndex={1}
+              // Default selected item index
+              placeholder={filter_text.name == null ? 'Select Filter' : filter_text.name}
+              // place holder for the search input
+              resPtValue={false}
+              // Reset textInput Value with true and false state
+              underlineColorAndroid="transparent"
+
+            // To remove the underline from the android input
+            />
+
+
+          </View>
+
+        </KeyboardAvoidingView>
+        <View style={{
+          flexDirection: 'row', flexWrap: 'wrap', width: 140, alignSelf: 'center', marginTop: 20,
+          borderBottomColor: '#142c44',
+
+          borderBottomWidth: 3,
+        }}>
+        </View>
+
+        <View style={styles.viewissuesRow}>
+          <CupertinoButtonDelete
+            style={styles.viewissues}
+          ></CupertinoButtonDelete>
+          <CupertinoButtonDelete2
+            style={styles.assignedbtn}
+          ></CupertinoButtonDelete2>
+          <CupertinoButtonDelete3
+            style={styles.unassignedbutton}
+          ></CupertinoButtonDelete3>
+        </View>
+        <View style={styles.monitoredbuttonRow}>
+          <CupertinoButtonDelete1
+            style={styles.monitoredbutton}
+          ></CupertinoButtonDelete1>
+          <CupertinoButtonDelete4
+            style={styles.reportissuebtn}
+          ></CupertinoButtonDelete4>
+          <CupertinoButtonDelete8
+            style={styles.reportedissue_button}
+          ></CupertinoButtonDelete8>
+        </View>
+        <View style={styles.viewIssuesRow}>
+          <Text style={styles.viewIssues}>View Issues</Text>
+          <Text style={styles.assigned}>Assigned</Text>
+          <Text style={styles.unassigned}>Unassigned</Text>
+        </View>
+        <View style={styles.monitoredRow}>
+          <Text style={styles.monitored}>Monitored</Text>
+          <Text style={styles.reportIssue}>Report Issue</Text>
+          <Text style={styles.reported}>Reported</Text>
+        </View>
+        <View style={styles.filtersbtnRow}>
+          <CupertinoButtonDelete6
+            style={styles.filtersbtn}
+          ></CupertinoButtonDelete6>
+          <CupertinoButtonDelete7
+            style={styles.logoutbtn}
+          ></CupertinoButtonDelete7>
+          <CupertinoButtonDelete5
+            style={styles.aboutbtn}
+          ></CupertinoButtonDelete5>
+        </View>
+        <View style={styles.filtersRow}>
+          <Text style={styles.filters}>Filters</Text>
+          <Text style={styles.logout}>Logout</Text>
+          <Text style={styles.about}>About</Text>
+        </View>
+
+
+        {/* <View
       style={{
         flexDirection: 'column',
         height: '100%',
@@ -372,7 +419,7 @@ setUserDetails(global.userDetails);
 
 
            */}
-      {/* <View style={styles.button_ViewIssuesRow}>
+        {/* <View style={styles.button_ViewIssuesRow}>
         <CupertinoButtonPurple 
           style={styles.button_ViewIssues}
         ></CupertinoButtonPurple>
@@ -409,12 +456,12 @@ setUserDetails(global.userDetails);
         ></CupertinoButtonPurple7>
       </View>
      */}
-      {/* <CupertinoSearchBarBasic
+        {/* <CupertinoSearchBarBasic
         style={styles.cupertinoSearchBarBasic}
       ></CupertinoSearchBarBasic>
       */}
-    
-      {/* <View >
+
+        {/* <View >
     
         <SearchableDropdown
         onTextChange={qaOwner_text => {keyboard.dismiss(),console.log(qaOwner_text), setQA_OwnerText(qaOwner_text)}}
@@ -462,10 +509,10 @@ setUserDetails(global.userDetails);
           // underlineColorAndroid="transparent"
           // To remove the underline from the android input
         />
-      </View> */}  
-      
-       {/* <TouchableWithoutFeedback  onPress={() => Keyboard.dismiss()}> */}
-          {/* <View 
+      </View> */}
+
+        {/* <TouchableWithoutFeedback  onPress={() => Keyboard.dismiss()}> */}
+        {/* <View 
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -473,9 +520,9 @@ setUserDetails(global.userDetails);
               width: '50%',
             }}>
          */}
-         {/* <Text style={{color:'black',paddingTop:30, marginTop:10,marginLeft:25, fontWeight:'500',fontSize:15}} >Select Project </Text>
+        {/* <Text style={{color:'black',paddingTop:30, marginTop:10,marginLeft:25, fontWeight:'500',fontSize:15}} >Select Project </Text>
            */}
-             {/* <KeyboardAvoidingView behavior='height'   onAccessibilityTap={()=>Keyboard.dismiss()} style={{width: '100%'}} >
+        {/* <KeyboardAvoidingView behavior='height'   onAccessibilityTap={()=>Keyboard.dismiss()} style={{width: '100%'}} >
            
         <View style={styles.container_dd}>
     
@@ -550,8 +597,8 @@ setUserDetails(global.userDetails);
            </View>
        
         </KeyboardAvoidingView> */}
-  
-           {/* <KeyboardAvoidingView behavior='height'   onAccessibilityTap={()=>Keyboard.dismiss()} style={{width: '100%'}} >
+
+        {/* <KeyboardAvoidingView behavior='height'   onAccessibilityTap={()=>Keyboard.dismiss()} style={{width: '100%'}} >
           
         <View style={styles.container_dd}>
     
@@ -626,11 +673,11 @@ setUserDetails(global.userDetails);
            </View>
        
         </KeyboardAvoidingView> */}
-      
-             {/* </TouchableWithoutFeedback> */}
 
-</View>
-    </>  
+        {/* </TouchableWithoutFeedback> */}
+
+      </View>
+    </>
   );
 };
 InitialScreen.navigationOptions = {
@@ -646,11 +693,11 @@ const styles = StyleSheet.create({
   //   justifyContent: 'center',
   // },
   container_dd: {
-   // paddingTop: 30,
-  
-   // marginLeft: 20,
-   // marginRight: 20,
-    
+    // paddingTop: 30,
+
+    // marginLeft: 20,
+    // marginRight: 20,
+
   },
 
   titleText: {
@@ -661,7 +708,7 @@ const styles = StyleSheet.create({
   headingText: {
     padding: 8,
   },
- 
+
   button_ViewIssues: {
     height: 54,
     width: 158
@@ -736,8 +783,8 @@ const styles = StyleSheet.create({
     fontFamily: "roboto-regular",
     color: "#121212",
     marginTop: 21,
-    marginLeft:25,
-    marginBottom:4,
+    marginLeft: 25,
+    marginBottom: 4,
   },
   cupertinoButtonInfo: {
     height: 38,
@@ -746,26 +793,26 @@ const styles = StyleSheet.create({
     marginLeft: 267
   },
   container: {
-    flex:0.0025,
-   // borderWidth: 1,
-   flexDirection:'column',
+    flex: 0.0025,
+    // borderWidth: 1,
+    flexDirection: 'column',
     borderColor: "rgba(255,255,255,1)",
- 
+
     backgroundColor: '#c8cad0',
-    height:'100%',
-   
-   
+    height: '100%',
+
+
   },
   container1: {
-   
-   // borderWidth: 1,
+
+    // borderWidth: 1,
 
     borderColor: "rgba(255,255,255,1)",
 
     backgroundColor: '#c8cad0',
-    height:'100%',
-   
-   
+    height: '100%',
+
+
   },
   viewissues: {
     height: 85,
@@ -961,7 +1008,7 @@ const styles = StyleSheet.create({
   aboutbtn: {
     height: 85,
     width: 84,
-    
+
     backgroundColor: "rgba(255,255,255,1)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,1)",
@@ -1003,6 +1050,6 @@ const styles = StyleSheet.create({
     marginTop: 13,
     marginLeft: 62,
     marginRight: 63,
-  
+
   }
 });

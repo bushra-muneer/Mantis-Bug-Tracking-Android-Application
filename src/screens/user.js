@@ -38,7 +38,7 @@ const UserScreen = props => {
   // const url = 'http://mantis.sibisoft.com/api/rest/issues/' + id;
   const getUser = async () => {
     await axios
-      .get(getAll_url, { headers: { Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh' } })
+      .get(getAll_url, { headers: { Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1' } })
       .then(response => {
         const issue_Array = response.data.issues;
         setUser(issue_Array);
@@ -57,7 +57,7 @@ const UserScreen = props => {
 
   const getIssues_User = async () => {
     await axios
-      .get(getIssues_url, { headers: { Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh' } })
+      .get(getIssues_url, { headers: { Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1' } })
       .then(response => {
         const issue_Array = response.data.issues;
         setUser(issue_Array);
@@ -92,6 +92,135 @@ return date;
     
 return timen;
    }
+
+   function extracterdate(ds){
+    data2 = ds
+for (let i in data2) {
+  //  x=(data2[i]["fields"]);
+    for (let j in data2[i]["field"]){
+      if (data2[i]["field"]["name"]=="ERDate"){
+              
+              var x =data2[i]["value"];
+            //   console.log(x);
+      }
+}
+}
+
+    return x;
+}
+
+
+function Clients(ds){
+  data2 = ds
+for (let i in data2) {
+//  x=(data2[i]["fields"]);
+  for (let j in data2[i]["field"]){
+    if (data2[i]["field"]["name"]=="Clients"){
+            
+            var x =data2[i]["value"];
+          //   console.log(x);
+    }
+}
+}
+
+  return x;
+}
+
+function QAOwner(ds){
+  data2 = ds
+for (let i in data2) {
+//  x=(data2[i]["fields"]);
+  for (let j in data2[i]["field"]){
+    if (data2[i]["field"]["name"]=="QA Owner"){
+            
+            var x =data2[i]["value"];
+          //   console.log(x);
+    }
+}
+}
+
+  return x;
+}
+
+function Contacts(ds){
+  data2 = ds
+for (let i in data2) {
+//  x=(data2[i]["fields"]);
+  for (let j in data2[i]["field"]){
+    if (data2[i]["field"]["name"]=="Contacts"){
+            
+            var x =data2[i]["value"];
+            console.log(x);
+    }
+}
+}
+
+  return x == "" ? "Not Added" : x;
+}
+
+function ErDate(ds){
+  //history.message="ERDate"
+  data2 = ds
+for (let i in data2) {
+//  x=(data2[i]["fields"]);
+  for (let j in data2[i]["field"]){
+    if (data2[i]["field"]["name"]=="ERDate"){
+            
+            var x =data2[i]["change"];
+          //   console.log(x);
+    }
+}
+}
+
+  return x ==""?"No ERDate Added" : x;
+}
+  //  function getER_date(custom_fields){
+  //   console.log('***************************');
+  // for (var f in custom_fields){
+  //   console.log(custom_fields[f]);
+  // }
+  //   console.log('***************************');
+  //   return '';
+
+  //  }
+   function color_priority(name){
+    let color;
+    if (name == "low") {
+      //low
+        //color = '#F6D25B';
+        color = '#FFF4D2';
+    }
+   else if (name == "normal") {
+    //normal --> green
+    //  color = '#B1F8AA';
+    color = '#9DC08B';
+  }
+  
+  else if (name == "high") {
+    //high --> blue
+   // color = '#89CFF0';
+   color = '#B4E4FF';
+  }
+  else if (name == "urgent") {
+    //urgent  --> light red
+  //  color = '#FA8072';
+  color = '#FFD1D1';
+  }
+  else if (name == "immediate") {
+    //immediate --> brighter red
+    //color = '#FF4433';
+    color = '#FF9494';
+  }
+  
+     else  {
+      //none
+        //color = '#E0E0E0';
+        color = '#ECF2FF';
+    }
+    return color;
+  
+   }
+
 
   useEffect(() => {
     console.log(id);
@@ -132,6 +261,7 @@ return timen;
               data={user}
               keyExtractor={({ id }) => id.toString()}
               renderItem={({ item }) => (
+              
                 <>
                     <Text
               style={{
@@ -168,7 +298,7 @@ return timen;
                         fontWeight:'bold',
                         marginLeft:120
                       }}>
-                      Category 
+                      Module 
                     
                     </Text>
                    
@@ -198,6 +328,112 @@ return timen;
                     </Text>
                     
                    </View>
+                   <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                    
+                        
+                      }}>
+                     Created At
+                    
+                   
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                        marginLeft:94
+                      }}>
+                   Updated At
+                    
+                    </Text>
+                   
+                    </View>
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingBottom:5,
+                    width:340,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      
+                      }}>
+                    { extract_date(item.created_at)  +" "+ Moment( extract_time(item.created_at),'HHmmss').format("HH:mm")   ?? ''} 
+                    
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        marginLeft:50
+                      }}>
+                   { extract_date(item.updated_at) +" "+ Moment( extract_time(item.updated_at),'HHmmss').format("HH:mm")   ?? ''} 
+                    
+                    </Text>
+                    </View>
+
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                    
+                        
+                      }}>
+                  Priority
+                    
+                   
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold',
+                        marginLeft:117
+                      }}>
+               ER Date
+                    
+                    </Text>
+                   
+                    </View>
+                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingBottom:5,
+                    width:340,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        backgroundColor:color_priority( item.priority.name),
+                      }}>
+                     { item.priority.name!=undefined ?  item.priority.name: '' } 
+                    
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        marginLeft:120
+                      }}>
+                     { ErDate(item.history) ?? "Not Added"} 
+                    
+                    </Text>
+                    </View>
+
 
                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5
   }}>
@@ -222,9 +458,7 @@ return timen;
                       
                     </Text>
                     </View>
-                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,}}>
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,}}>
                     <Text
                       style={{
                         fontSize: 15,
@@ -246,8 +480,60 @@ return timen;
                       
                     </Text>
                     </View>
+                    {/* <View style={{flex:1,flexDirection:'column',paddingTop:5,paddingBottom:2
+   }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      Priority
+                        
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'center',
+                       
+                 
+                        backgroundColor:color_priority( item.priority.name),
+                      }}>
+                 { item.priority.name!=undefined ?  item.priority.name: '' } 
+                     
+                      
+                    </Text>
+                    </View>
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5
+  }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      ER Date 
+                        
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      }}>
+                         { ErDate(item.history) ?? "Not Added"} 
+                     
+                      
+                    </Text>
+                    </View>
+                  */}
 
-
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingBottom:5,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}/>
 
                    {/* <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
                     <Text
@@ -302,58 +588,7 @@ return timen;
                     </Text>
         
                    </View> */}
-                   <View style={{flexDirection:'row' , flexWrap:'wrap',paddingTop:5,}}>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        color: 'black',
-                        textAlign: 'justify',
-                        fontWeight:'bold',
-                    
-                        
-                      }}>
-                     Created At
-                    
-                   
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        color: 'black',
-                        textAlign: 'justify',
-                        fontWeight:'bold',
-                        marginLeft:100
-                      }}>
-                   Updated At
-                    
-                    </Text>
-                   
-                    </View>
-                    <View style={{flexDirection:'row' , flexWrap:'wrap',paddingBottom:5,
-                    width:340,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,}}>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        color: 'black',
-                        textAlign: 'justify',
-                      
-                      }}>
-                    { extract_date(item.created_at)  +" "+ Moment( extract_time(item.created_at),'HHmmss').format("HH:mm")   ?? ''} 
-                    
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        color: 'black',
-                        textAlign: 'justify',
-                        marginLeft:56
-                      }}>
-                   { extract_date(item.updated_at) +" "+ Moment( extract_time(item.updated_at),'HHmmss').format("HH:mm")   ?? ''} 
-                    
-                    </Text>
-                    </View>
+                  
                    {/* <View style={{flexDirection:'row' , flexWrap:'wrap',}}>
                     <Text
                       style={{
@@ -399,11 +634,12 @@ return timen;
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                         {item.reporter.real_name!=undefined ? item.reporter.real_name : ''} 
+                         {item.reporter.real_name!=undefined ? item.reporter.real_name : 'Not Added'} 
                      
                       
                     </Text>
                     </View>
+
                     <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,
     borderBottomColor: 'black',
     borderBottomWidth: 1,}}>
@@ -423,7 +659,77 @@ return timen;
                         color: 'black',
                         textAlign: 'justify',
                       }}>
-                   {item.handler.real_name!=undefined ? item.handler.real_name : ''} 
+                   {item.handler.real_name!=undefined ? item.handler.real_name : 'Not Added'} 
+                     
+                      
+                    </Text>
+                    </View>
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5
+  }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      Clients 
+                        
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      }}>
+                         { Clients(item.custom_fields) ?? "Not Added"} 
+                     
+                      
+                    </Text>
+                    </View>
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5
+  }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      QA Owner 
+                        
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      }}>
+                               { QAOwner(item.custom_fields) ?? "Not Added"} 
+                     
+                      
+                    </Text>
+                    </View>
+                    <View style={{ width:340,flex:1,flexDirection:'column',paddingVertical:5,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,}}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                        fontWeight:'bold'
+                      }}>
+                      Contacts
+                        
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: 'black',
+                        textAlign: 'justify',
+                      }}>
+                       { Contacts(item.custom_fields) ?? "Not Added"} 
                      
                       
                     </Text>

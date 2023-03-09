@@ -36,7 +36,7 @@ const ReminderScreen = props => {
      const url = 'http://mantis.sibisoft.com/api/rest/users/getAll';
     const getProjectUsers = async () => {
       await axios
-        .get(url, {headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'}})
+        .get(url, {headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'}})
         .then(response => {
           const allprojectUsers = response.data;
           setServerData(allprojectUsers);

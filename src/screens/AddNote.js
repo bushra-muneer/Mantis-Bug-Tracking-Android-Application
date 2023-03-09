@@ -93,7 +93,7 @@ const selectMultipleFile = async () => {
         const timeout = setTimeout(() => {
          
             handleDesc("Description");
-            setFilePathUri(null);
+            setFilePathUri([null]);
            
             setMultipleFile([]);
           }, 1000);
@@ -155,13 +155,13 @@ const captureImage = async (type) => {
     launchCamera(options, (response) => {
       var json=response.assets;
       // console.log('Response = ',json);
-      setFilePath(json);
+      setFilePath(json ?? []);
 
-      console.log(json);
-        
-      console.log(json[0].uri)
-      setFilePathUri(json[0].uri);
-   //  console.log(Object.values(json[0]));
+    //  console.log(json!=undefined ? json:[]);    
+    //console.log(json[0]!=undefined ? json[0].uri : [])
+    console.log(json[0]);
+      setFilePathUri(json[0].uri ?? "");
+   // console.log(Object.values(json[0]));
 
       if (response.didCancel) {
         alert('User cancelled camera picker');
@@ -308,7 +308,7 @@ const captureImage = async (type) => {
         {/* <Text>Very long text omg! This will surely be long.</Text> */}
       </View>
 
-    {filePathUri ?
+    {(filePathUri ?? []) ?
     <View>
     <Text  style={{color: 'black',paddingLeft:10 ,marginLeft:22}}>Image File Attached 
     <TouchableOpacity style={{paddingLeft:8,}} onPress={() => {deleteImage();}}>

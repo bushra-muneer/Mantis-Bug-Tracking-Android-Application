@@ -205,9 +205,9 @@ const captureImage = async (type) => {
       // console.log('Response = ',json);
       setFilePath(json);
 
-      console.log(json);
+      // console.log(json);
         
-      console.log(json[0].uri)
+      // console.log(json[0].uri)
       setFilePathUri(json[0].uri);
    //  console.log(Object.values(json[0]));
 
@@ -235,7 +235,7 @@ const captureImage = async (type) => {
   const getmodules = async () => {
     await axios
       .get(module_url, {
-        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+        headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
       })
       .then(response => {
         const all_modules = response.data;
@@ -259,7 +259,7 @@ const captureImage = async (type) => {
   const getTargetVersion = async () => {
     await axios
       .get(targetVerion_url, {
-        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+        headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
       })
       .then(response => {
       
@@ -295,7 +295,7 @@ let uniqueChars = [...new Set(all_tv)];
   const getClients = async () => {
     await axios
       .get(clients_url, {
-        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+        headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
       })
       .then(response => {
       
@@ -321,7 +321,7 @@ let uniqueChars = [...new Set(all_tv)];
   // const  = async () => {
   //   await axios
   //     .get(qaOwners_url, {
-  //       headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+  //       headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
   //     })
   //     .then(response => {
   //       const all_qaOwners = response.data;
@@ -356,7 +356,7 @@ let uniqueChars = [...new Set(all_tv)];
   const getQAOwners = async () => {
     await axios
       .get(Owners_url, {
-        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+        headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
       })
       .then(response => {
         const all_qaOwners = response.data;
@@ -396,7 +396,7 @@ setServerData_QAowners(data_filter);
   const getOwners = async () => {
     await axios
       .get(Owners_url, {
-        headers: {Authorization: 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'},
+        headers: {Authorization: '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'},
       })
       .then(response => {
         const all_Owners = response.data;

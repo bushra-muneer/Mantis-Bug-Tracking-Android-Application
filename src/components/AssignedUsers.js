@@ -73,7 +73,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
     //   console.log(uri);
      
-    await axios.get(url,{ headers: {'Authorization': 'yV7MFirhfCf-jXncm9mGoTutD_YIIDDh'} })
+    await axios.get(url,{ headers: {'Authorization': '3s5Dj1Nc1A6ur-JsQlG4DXs6oHO0rFE1'} })
     .then((response)=>{
     const allissues = response.data.issues;
    
