@@ -79,7 +79,7 @@ Other Threads:
 
 VM state:not at safepoint (not fully initialized)
 
-VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+VM Mutex/MonitorScreen currently owned by a thread:  ([mutex/lock_event])
 [0x000001f2027ec130] Heap_lock - owner thread: 0x000001f2027ee000
 
 Heap address: 0x0000000705800000, size: 4008 MB, Compressed Oops mode: Non-zero based: 0x0000000705800000
@@ -141,7 +141,7 @@ symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;D:\An
 
 VM Arguments:
 java_command: git4idea.http.GitAskPassApp Username for 'https://github.com': 
-java_class_path (initial): D:/Android Studio/plugins/git4idea/lib/git4idea-rt.jar;D:/Android Studio/lib/3rd-party.jar;D:/Android Studio/lib/3rd-party-rt.jar
+java_class_path (DashboardScreen): D:/Android Studio/plugins/git4idea/lib/git4idea-rt.jar;D:/Android Studio/lib/3rd-party.jar;D:/Android Studio/lib/3rd-party-rt.jar
 Launcher Type: SUN_STANDARD
 
 [Global flags]
@@ -172,7 +172,7 @@ Log output configuration:
 Environment Variables:
 JAVA_HOME=C:\Program Files\Java\jdk-11
 CLASSPATH=.;
-PATH=C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Bushra Muneer\bin;C:\Program Files (x86)\Actian\PSQL\bin;C:\Program Files\Actian\PSQL\bin;C:\Python27;C:\Python27\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\010 Editor v3;C:\Program Files (x86)\cvsnt;C:\Program Files\TortoiseGit\bin;C:\Program Files\Git LFS;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk-11\bin;D:\Tools\Ant\bin;D:\Tools\Tomcat6\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs;C:\Program Files\Java\jdk1.8.0_211\bin;C:\Users\Bushra Muneer\AppData\Local\Microsoft\WindowsApps;C:\Users\Bushra Muneer\AppData\Roaming\npm;C:\src\flutter\bin;D:\Microsoft VS Code\bin
+PATH=C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\ViewIssues\Bushra Muneer\bin;C:\Program Files (x86)\Actian\PSQL\bin;C:\Program Files\Actian\PSQL\bin;C:\Python27;C:\Python27\Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files (x86)\010 Editor v3;C:\Program Files (x86)\cvsnt;C:\Program Files\TortoiseGit\bin;C:\Program Files\Git LFS;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk-11\bin;D:\Tools\Ant\bin;D:\Tools\Tomcat6\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs;C:\Program Files\Java\jdk1.8.0_211\bin;C:\ViewIssues\Bushra Muneer\AppData\Local\Microsoft\WindowsApps;C:\ViewIssues\Bushra Muneer\AppData\Roaming\npm;C:\src\flutter\bin;D:\Microsoft VS Code\bin
 USERNAME=Bushra Muneer
 DISPLAY=:0.0
 LC_ALL=en_US.UTF-8
@@ -186,11 +186,11 @@ PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 140 Stepping 1, GenuineIntel
 OS: Windows 10 , 64 bit Build 19041 (10.0.19041.1889)
 OS uptime: 33 days 14:34 hours
 
-CPU:total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 140 stepping 1 microcode 0x8a, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx, evex, sha, fma
+CPU:total 8 (DashboardScreen active 8) (4 cores per cpu, 2 threads per core) family 6 model 140 stepping 1 microcode 0x8a, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx, evex, sha, fma
 
 Memory: 4k page, system-wide physical 16026M (478M free)
 TotalPageFile size 32410M (AvailPageFile size 216M)
-current process WorkingSet (physical memory assigned to process): 10M, peak: 10M
+current process WorkingSet (physical memory AssignedScreen to process): 10M, peak: 10M
 current process commit charge ("private bytes"): 60M, peak: 312M
 
 vm_info: OpenJDK 64-Bit Server VM (11.0.13+0-b1751.21-8125866) for windows-amd64 JRE (11.0.13+0-b1751.21-8125866), built on Feb  2 2022 03:00:22 by "builder" with MS VC++ 14.0 (VS2015)

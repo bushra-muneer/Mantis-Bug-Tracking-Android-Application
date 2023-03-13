@@ -1,62 +1,34 @@
-import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View, } from 'react-native';
+import { LogBox } from 'react-native';
+import styles from '../style/ScreenStyle/AboutScreenStyle';
+
+const AboutScreen = () => {
  
-} from 'react-native';
-
-
-import { LogBox  } from 'react-native';
-
-const AboutScreen = props => {
-  const [loading, setLoading] = useState(true);
-
-
-
   useEffect(() => {
     LogBox.ignoreAllLogs();
-   
-  }, [loading]);
-
-  
+  }, []);
   return (
-<>
- 
-      <View style={styles.container}>
-        <View style={{width: '100%', marginTop: 4}}>
+
+    <>
+      <View style={styles.about_container}>
+        <View style={styles.about_view}>
           <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              width: '50%',
-            }}>
-            <Text style={{color: 'black', marginLeft: 10, fontSize: 15
-        }}>
-            Sample About Screen
-            </Text>  
-           
+            style={styles.about_wrapper}>
+            <Text style={styles.about_text}>
+            { global.sample}
+            </Text>
+
           </View>
         </View>
 
 
-       
- </View>
-   </>
-   );
- };
+
+      </View>
+    </>
+  );
+};
 
 export default AboutScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexGrow:1,
-    backgroundColor: 'white',
-  padding:4,
-    color: 'black',
-  },
 
-});

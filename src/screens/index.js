@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { useState,useEffect } from 'react';
-import {  View, Text, Button, TextInput, Modal, StyleSheet, Dimensions } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, Button, TextInput, Modal, StyleSheet, Dimensions } from 'react-native';
 const { width } = Dimensions.get("window");
 import { NavigationContainer } from '@react-navigation/native';
-import { IconButton,Colors } from 'react-native-paper';
-import {  createStackNavigator} from '@react-navigation/stack';
-import CupertinoButtonInfo from "../components/CupertinoButtonInfo";
+import { IconButton, Colors } from 'react-native-paper';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './home';
-import LoginScreen from '../components/login';
-import UserScreen from './user';
-import ReminderScreen from './Reminder';
-import InitialScreen from './Initial';
+import LoginScreen from '../components/LoginScreen';
+import IssueDetailScreen from './IssueDetailScreen';
+import ReminderScreen from './ReminderScreen';
+import DashboardScreen from './DashboardScreen';
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import * as Keychain from "react-native-keychain";
 import {
@@ -23,20 +22,18 @@ import ReportIssue from './ReportIssue';
 import AddNote from './AddNote';
 import AboutScreen from './AboutScreen';
 import { color } from 'react-native-reanimated';
-import MonitorScreen from './monitor';
-import AssignedScreen from './assigned';
-import UnAssignedScreen from './Unassigned';
-import ReportedScreen from './reported';
+import MonitorScreen from './MonitorScreen';
+import AssignedScreen from './AssignedScreen';
+import UnAssignedScreen from './UnAssignedScreen';
+import ReportedScreen from './ReportedScreen';
 
 global.__reanimatedWorkletInit = () => { };
-
-
 
 function DrawerNav(props) {
 
   const Drawer = createDrawerNavigator();
   const [isModalVisible, setModalVisible] = useState(false);
- 
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userDetails, setUserDetails] = React.useState({});
   const [inputValue, setInputValue] = useState("");
@@ -48,9 +45,9 @@ function DrawerNav(props) {
   const search_issue = () => {
     setModalVisible(!isModalVisible);
     setInputValue("");
-    
-   
-    props.navigation.navigate('UserScreen', {
+
+
+    props.navigation.navigate('IssueDetailScreen', {
       id: inputValue,
     })
   };
@@ -58,18 +55,18 @@ function DrawerNav(props) {
 
     setIsLoggedIn(global.loggedin);
     setUserDetails(global.userDetails);
-    
-      
-        }, []);
-  
-  const handleLogout = async()=>{
+
+
+  }, []);
+
+  const handleLogout = async () => {
     const logout = await Keychain.resetGenericPassword();
-    console.log({logout});
+    console.log({ logout });
     props.navigation.navigate('LoginScreen'
- 
+
     )
-   
-    if(logout){
+
+    if (logout) {
       setIsLoggedIn(false);
       setUserDetails({});
     }
@@ -101,118 +98,92 @@ function DrawerNav(props) {
           </View>
         </View>
       </Modal>
-
-
-
-      <Drawer.Navigator initialRouteName="InitialScreen"
-    
-    
+      <Drawer.Navigator initialRouteName="DashboardScreen"
         useLegacyImplementation
-        
         screenOptions={{
           headerTintColor: Colors.white,
           headerStyle: {
             backgroundColor: '#142c44'
           }
-        
-        
-      }}
-      
-        drawerContent={(props) => <CustomDrawerConten {...props} />}
-      >
 
-    <Drawer.Screen name="InitialScreen" component={InitialScreen} options={{ title: "Dashboard",  alignSelf: 'center',  headerRight: () => (
-           <View >
-        <View style={styles.container2}>
-        <IconButton
-      icon="magnify"
-      style={{marginBottom:-25}}
-      size={24}
-    color={Colors.white}
-      onPress={toggleModalVisibility}
-    />
-       <IconButton
-              icon="logout"
-              size={20}
-              color={Colors.white}
-              onPress={handleLogout}
-            />
-    </View>
-  </View>
- 
-  
-   
-   
-          ),headerTitleStyle: { color: 'white' ,alignSelf:'center'}, headerStyle: { backgroundColor: "#142c44"},}} />
-
-
+        }}
+        drawerContent={(props) => <CustomDrawerConten {...props} />}      >
+        <Drawer.Screen name="DashboardScreen" component={DashboardScreen} options={{
+          title: "Dashboard", alignSelf: 'center', headerRight: () => (
+            <View >
+              <View style={styles.container2}>
+                <IconButton
+                  icon="magnify"
+                  style={{ marginBottom: -25 }}
+                  size={24}
+                  color={Colors.white}
+                  onPress={toggleModalVisibility}
+                />
+                <IconButton
+                  icon="logout"
+                  size={20}
+                  color={Colors.white}
+                  onPress={handleLogout}
+                />
+              </View>
+            </View>
+          ), headerTitleStyle: { color: 'white', alignSelf: 'center' }, headerStyle: { backgroundColor: "#142c44" },
+        }} />
         <Drawer.Screen name="View Issues" component={HomeScreen} options={{
           headerRight: () => (
             <IconButton
               icon="magnify"
               size={25}
-            color={Colors.white}
+              color={Colors.white}
               onPress={toggleModalVisibility}
             />
-           
-            
-          ) 
+          )
         }} />
 
-<Drawer.Screen name="Unassigned" component={UnAssignedScreen} options={{
+        <Drawer.Screen name="Unassigned" component={UnAssignedScreen} options={{
           headerRight: () => (
             <IconButton
               icon="magnify"
               size={25}
-            color={Colors.white}
+              color={Colors.white}
               onPress={toggleModalVisibility}
             />
-           
-            
-          ) 
+          )
         }} />
-             <Drawer.Screen name="Assigned to me" component={AssignedScreen} options={{
+        <Drawer.Screen name="Assigned to me" component={AssignedScreen} options={{
           headerRight: () => (
             <IconButton
               icon="magnify"
               size={25}
-            color={Colors.white}
+              color={Colors.white}
               onPress={toggleModalVisibility}
             />
-           
-            
-          ) 
+          )
+        }} />
+        <Drawer.Screen name="Monitored by me" component={MonitorScreen} options={{
+          headerRight: () => (
+            <IconButton
+              icon="magnify"
+              size={25}
+              color={Colors.white}
+              onPress={toggleModalVisibility}
+            />
+          )
         }} />
 
-           <Drawer.Screen name="Monitored by me" component={MonitorScreen} options={{
+        <Drawer.Screen name="Reported by me" component={ReportedScreen} options={{
           headerRight: () => (
             <IconButton
               icon="magnify"
               size={25}
-            color={Colors.white}
+              color={Colors.white}
               onPress={toggleModalVisibility}
             />
-           
-            
-          ) 
+          )
         }} />
-    
-         <Drawer.Screen name="Reported by me" component={ReportedScreen} options={{
-          headerRight: () => (
-            <IconButton
-              icon="magnify"
-              size={25}
-            color={Colors.white}
-              onPress={toggleModalVisibility}
-            />
-           
-            
-          ) 
-        }} />
-        
 
         <Drawer.Screen name="ReportIssue" component={ReportIssue} options={{ title: "Report Issue" }} />
-        <Drawer.Screen name="AboutScreen" component={AboutScreen} options={{ title:"About" }} />
+        <Drawer.Screen name="AboutScreen" component={AboutScreen} options={{ title: "About" }} />
       </Drawer.Navigator>
     </>
   );
@@ -225,7 +196,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#fff",
   },
-  
+
   container1: {
     flex: 1
   },
@@ -238,14 +209,11 @@ const styles = StyleSheet.create({
   },
   container2: {
     width: 89,
-    height: 36,marginRight:18,
-    marginBottom:8,
-    flexDirection:'row'
+    height: 36, marginRight: 18,
+    marginBottom: 8,
+    flexDirection: 'row'
   },
-  cupertinoButtonInfo: {
-    height: 36,
-    width: 89
-  },
+
   buttonheader: {
     height: 39,
     width: 92,
@@ -294,7 +262,7 @@ function CustomDrawerConten(props) {
   const [text, setText] = useState('');
   return (
 
-    <DrawerContentScrollView {...props} style={{backgroundColor:'#c8cad0'}} >
+    <DrawerContentScrollView {...props} style={{ backgroundColor: '#c8cad0' }} >
       <DrawerItemList {...props} />
       <View >
 
@@ -304,11 +272,11 @@ function CustomDrawerConten(props) {
 
             paddingVertical: 5,
             paddingLeft: 4,
-          
+
           }}>
           <View >
             <TextInput
-              style={{ height: 40,paddingRight:20,marginRight:22, paddingLeft:12, color: 'black' }}
+              style={{ height: 40, paddingRight: 20, marginRight: 22, paddingLeft: 12, color: 'black' }}
               placeholder="Enter Issue #"
               placeholderTextColor="#000"
               keyboardType={'phone-pad'}
@@ -317,33 +285,18 @@ function CustomDrawerConten(props) {
             />
           </View>
           <View style={{ paddingLeft: 100, paddingTop: 4, }}>
-          <IconButton
+            <IconButton
               icon="magnify"
               size={25}
               onPress={() =>
-                props.navigation.navigate('UserScreen', {
+                props.navigation.navigate('IssueDetailScreen', {
                   id: text
                 })
               }
             />
-            {/* <TouchableOpacity
-
-              onPress={() =>
-                props.navigation.navigate('UserScreen', {
-                  id: text
-                })
-              }
-            >
-              <Text style={{ fontSize: 21,alignSelf:'flex-start' }}>🔍</Text>
-            </TouchableOpacity>
- */}
-
-
           </View>
         </View>
-
       </View>
-      {/* <DrawerItem label="Logout" onPress={() => alert('Link to help')} /> */}
     </DrawerContentScrollView>
 
   );
@@ -355,29 +308,12 @@ function App() {
   return (
 
     <NavigationContainer>
-
       <Stack.Navigator>
-
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="InitialScreen" component={DrawerNav} options={{ headerShown: false }} />
-
-        <Stack.Screen name="UserScreen" component={UserScreen} options={{ title: "Issue Details" }} />
-
+        <Stack.Screen name="DashboardScreen" component={DrawerNav} options={{ headerShown: false }} />
+        <Stack.Screen name="IssueDetailScreen" component={IssueDetailScreen} options={{ title: "Issue Details" }} />
         <Stack.Screen name="ReminderScreen" component={ReminderScreen} options={{ title: "Issue Reminder" }} />
         <Stack.Screen name="AddNote" component={AddNote} options={{ title: "Add Notes" }} />
-        {/* <Stack.Screen
-
-          name="HomeScreen"
-
-          component={DrawerNav}      // This is where I added DrawerNav        
-
-          headerLeft={null}
-          gestureEnabled={false}
-
-          options={{ headerShown: false }}
-
-        /> */}
-
       </Stack.Navigator>
 
     </NavigationContainer>
@@ -385,8 +321,5 @@ function App() {
   );
 
 }
-
-
-
 
 export default App;

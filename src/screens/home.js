@@ -1,16 +1,10 @@
 
 import React from 'react';
-import Users from '../components/Users';
-import { NavigationContainer } from "@react-navigation/native";
-
+import ViewIssues from '../components/ViewIssues';
 
 const HomeScreen = props => {
-    
     return (
-        
-        <Users navigation={props.navigation} />
-     
-      
+        <ViewIssues navigation={props.navigation} />
     );
 };
 HomeScreen.navigationOptions = {
