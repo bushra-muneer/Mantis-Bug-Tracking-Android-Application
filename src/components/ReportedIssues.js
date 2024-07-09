@@ -26,8 +26,6 @@ const ReportedIssues = props => {
 
   const url = global.base_url + '/api/rest/issues' + global.uid + '/?filter_id=reported';
 
-  //const url='http://192.168.8.102:1234/mantis/api/rest/issues';
-  //const getIssues_url = baseurl + '/api/rest/issues/' + uid + '/' + id;
 
   const [searchQuery, setSearchQuery] = React.useState('');
 
