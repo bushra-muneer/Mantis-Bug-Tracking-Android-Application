@@ -94,9 +94,9 @@ const ReportIssue = props => {
     }
   };
 
-  const baseurl = 'http://mantis.sibisoft.com';
+  const baseurl = '';
 
-  //const baseurl='http://192.168.8.102:1234/mantis';
+
 
   const module_url = baseurl + '/api/rest/users/getProdModule';
   const targetVerion_url =
