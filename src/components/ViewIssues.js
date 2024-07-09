@@ -24,12 +24,7 @@ const ViewIssues = props => {
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [uri, setUri] = useState('');
 
-    // const url='http://mantis.sibisoft.com/api/rest/issues';
-    //  const url='http://mantis.sibisoft.com/api/rest/issues';
-
-    //const url='http://192.168.8.102:1234/mantis/api/rest/issues';
-//const getIssues_url = baseurl + '/api/rest/issues/' + uid + '/' + id;
-
+  
     const [searchQuery, setSearchQuery] = React.useState('');
 
     const onChangeSearch = query => setSearchQuery(query);
@@ -151,13 +146,13 @@ const ViewIssues = props => {
    
       if (filt!=undefined){ 
        
-        const url=( "http://mantis.sibisoft.com/api/rest/issues?filter_id="+filt);
+        const url=( "api/rest/issues?filter_id="+filt);
         setLoading(true);
       getFiltersBasedIssue();
         
       }else{
        
-        const url=( "http://mantis.sibisoft.com/api/rest/issues");
+        const url=( "api/rest/issues");
         setLoading(true);
         getUsers(url);
       }
