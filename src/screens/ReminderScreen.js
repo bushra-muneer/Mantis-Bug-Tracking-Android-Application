@@ -31,9 +31,8 @@ const ReminderScreen = props => {
     
       return (a < b) ? -1 : (a > b) ? 1 : 0;
     }
-    
-  //const url='http://192.168.8.102:1234/mantis/api/rest/users/getAll';
-     const url = 'http://mantis.sibisoft.com/api/rest/users/getAll';
+    const baseurl='';
+     const url = baseurl+'/rest/users/getAll';
     const getProjectUsers = async () => {
       await axios
         .get(url, {headers: {Authorization: global.Authorization_Key}})
